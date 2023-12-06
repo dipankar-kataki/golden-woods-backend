@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -21,7 +22,7 @@ class ContactController extends Controller
             return response()->json(["message" => 'Oops!' . $validator->errors()->first(), "status" => 400]);
         }
         $contact = Contact::create(request()->all());
-        return response()->json(["message"=>"Contact submitted successfully" ,"status"=> 200]);
+        return response()->json(["message"=>"Contact request submitted. We will call you back soon!" ,"status"=> 200]);
     }
 
     public function show(Request $request)
@@ -32,8 +33,8 @@ class ContactController extends Controller
 
     public function update(Request $request)
     {   
-        // dump($request);
-        if(!$request->madeContact){
+        dump($request->input("madeContact"));
+        if(($request->input("madeContact")) ==null){
             return response()->json(["message"=> "Invalid request.","status"=>400]);
         }
         $contact = Contact::find($request->id);
@@ -41,7 +42,7 @@ class ContactController extends Controller
         $contact->save();
         return response()->json(["message"=> "Contact updated.","status"=> 200]);
     }
-
+ 
     public function destroy(Request $request)
     {
         //

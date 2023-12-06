@@ -12,6 +12,9 @@ class ProjectAmenity extends Model
         "projectId",
         "amenityId",
     ];
+    protected $casts = [
+        'amenityId' => 'array',
+    ];
 
     public static function rules(){
         return [

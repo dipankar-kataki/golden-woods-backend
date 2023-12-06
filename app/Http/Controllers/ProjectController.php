@@ -3,129 +3,199 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Enquiry;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use DB;
 class ProjectController extends Controller
+
 {
-    public function create(Request $request)
+public function count(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), Project::createRules());
-            if ($validator->fails()) {
-                return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
-            }
-            if (!$request->has('projectName')) {
-                return response()->json(["message" => "Oops! 'projectName' is required.", "status" => 400]);
-            }
-            $projectData =[
-                'projectName' => $request->projectName,
-                'description' => $request->description,
-                'status' => $request->status,
-                'location' => $request->location,
+            $status = $request->input('status', null);
+
+            $totalCount = Project::count();
+            $ongoingCount = Project::where('status', 'ongoing')->count();
+            $completedCount = Project::where('status', 'completed')->count();
+            $enquiriesCount = Enquiry::count(); 
+            $contactCount = Contact::count();
+            $data = [
+                'total_projects' => $totalCount,
+                'ongoing_projects' => $ongoingCount,
+                'completed_projects' => $completedCount,
+                'enquiries' => $enquiriesCount,
+                "contactCount"=>$contactCount
             ];
-            
-            $projectData["projectImage"] = $request->projectImage->store('public/image');
-            $projectData["projectVideo"] = $request->approvedPlan->store('public/video');;
-            $projectData["approvedPlan"] = $request->approvedPlan->store('public/plans');
-            $projectData["brochure"] = $request->brochure->store('public/brochures');
-            $projectData["projectNoc"] = $request->projectNoc->store('public/nocs');
-            $project = Project::create($projectData);
-    
-            return response()->json(["message" => "Project created successfully", "status" => 201]);
-        } catch (QueryException $e) {
-            if ($e->errorInfo[1] == 1062) {
-                return response()->json(["message" => "Project name already exists.", "status" => 400]);
-            } else {
-                return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
-            }
+
+            return response()->json(['data' => $data, 'status' => 200]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Oops! Something Went Wrong.' . $e->getMessage(), 'status' => 500]);
         }
     }
 
-    public function getById(Request $request)
-    {  
-        try{
-        $project = Project::find($request->id);
+public function create(Request $request)
+{
+    try {
+        $validator = Validator::make($request->all(), Project::createRules());
+
+        if ($validator->fails()) {
+            return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
+        }
+
+        $projectData = [
+            'projectName' => $request->projectName,
+            'status' => $request->status,
+            'description' => $request->description,
+            'location' => $request->location,
+            'projectImage1' => $request->file('projectImage1')->store('image'),
+            'projectImage2' => $request->file('projectImage2')->store('image'),
+            'projectVideo' => $request->file('projectVideo')->store('video'),
+            'overviewHeading' => $request->overviewHeading,
+            'overviewContent' => $request->overviewContent,
+            'overviewFooter' => $request->overviewFooter,
+            'withinReach' => $request->withinReach,
+            'withinReachImage' => $request->file('withinReachImage')->store('image'),
+            'flatConfig' => $request->flatConfig,
+        ];
+
+        if ($request->hasFile('brochure')) {
+            $projectData["brochure"] = $request->file('brochure')->store('brochures');
+        }
+
+        $project = Project::create($projectData);
+
+        return response()->json(["message" => "Project created successfully", "status" => 201]);
+    } catch (QueryException $e) {
+        if ($e->errorInfo[1] == 1062) {
+            return response()->json(["message" => "Project name already exists.", "status" => 400]);
+        } else {
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+        }
+    }
+}
+
+
+public function getById(Request $request)
+{
+    try {
+        $projectId = $request->id;
+        $project = Project::with([
+            'gallery' => function ($query) {
+                $query->whereIn('imageType', ['architectural', 'interior', 'exterior']);
+            }
+        ])->find($projectId);
+        dump($project);
+
         if (!$project) {
             return response()->json(['message' => 'Project not found'], 404);
         }
-            return response()->json(["data"=>$project, "status"=>200]);
-        }catch (\Exception $e) {
+        
+        $galleryImages = $project->gallery;
+        
+        if ($galleryImages->isEmpty()) {
+            return response()->json(['message' => 'No gallery images found for the project'], 200);
+        }
+        
+        // Continue processing or return the response with project and gallery details        
+        $projectImages = [
+            'architectural' => $project->gallery->where('imageType', 'architectural'),
+            'exterior' => $project->gallery->where('imageType', 'exterior'),
+            'interior' => $project->gallery->where('imageType', 'interior'),
+        ];
+
+        return response()->json(["data" => ['project' => $project, 'images' => $projectImages], "status" => 200]);
+    } catch (\Exception $e) {
+        return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+    }
+}
+
+public function getList(Request $request)
+    {
+        try {
+            $perPage = $request->input('per_page', 10);
+            $list = Project::paginate($perPage);
+            return response()->json(["data" => $list, "status" => 200]);
+        } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
     }
 
-    public function getList(Request $request)
+public function getProjectListByStatus(Request $request)
     {
         try{
-            $list = Project::select('id', "projectName")->get();
+            $status = $request->status;
+            if (empty($status)) {
+                return response()->json(["message" => "Project Status is empty.", "status" => 400]);
+            }
+            Log::info('SQL Query', ['query' => Project::where('status', '=', $status)->toSql()]);
+            Log::info('your-message', ['id' => $request->status]);
+            // $list = Project::select('id', "projectName", "description", "status",
+            //  "location", "projectImage", "projectVideo", "approvedPlan", "brochure", "projectNoc")->get();
+             $list = Project::where('status', '=', $status)->paginate(1);
+           //$list =  DB::table('projects')->orderBy('id')->cursorPaginate(1);
             return response()->json(["data"=>$list, "status"=>200]);
         }catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
     }
 
-    public function edit(Request $request)
+public function edit(Request $request)
     {
         try {
+            // Fetch the project
             $projectId = $request->id;
             $project = Project::find($projectId);
             if (!$project) {
                 return response()->json(["message" => "Project not found.", "status" => 404]);
             }
-            $projectName = $request->projectName;
-            print $projectName;
-            if($request->has('projectName') && !($request->projectName === $project->projectName)) {
-                $project->projectName = $request->projectName;
+            // Update project fields
+            $project->fill($request->only(['projectName', 'flatSize', 'status', 'description', 'location', 'isActive']));
+            // Update file fields
+            foreach (['projectImage', 'approvedPlan', 'brochure', 'projectNoc', 'projectVideo'] as $fileField) {
+                if ($request->hasFile($fileField)) {
+                    $oldFilePath = $project->{$fileField};
+                    if ($oldFilePath && Storage::exists($oldFilePath)) {
+                        Storage::delete($oldFilePath);
+                    }
+                    $project->{$fileField} = $request->file($fileField)->store($fileField);
+                }
             }
-            if($request->has('status') && ($request->status === "ongoing" || $request->status === "completed")) {
-                $project->status = $request->status;
-            }
-            if($request->has('description')){
-                $project->description = $request->description;
-            }
-            if($request->has('location')){
-                $project->location = $request->location;
-            }     
-            if($request->has('isActive')){
-                $project->isActive = $request->isActive;
-            }
-            if($request->hasFile('projectImage')){
-                $project->projectImage = $request->projectName->store('');
-            }
-            if($request->hasFile('approvedPlan')){
-                $project->projectName = $request->projectName->store('');
-            }
-            if($request->hasFile('brochure')){
-                $project->projectName = $request->projectName->store('');
-            }
-            if($request->hasFile('projectNoc')){
-                $project->projectName = $request->projectName->store('');
-            }
+            // Save changes
             $project->save();
-            return response()->json(["message" => "Project Modified.", "status" => 200]);
+            // Return response
+            return response()->json(["message" => "Project modified.", "data" => $project, "status" => 200]);
         } catch (\Exception $e) {
-            return response()->json(["message" => "Internal server error.", "status" => 500]);
+            // Log error
+            Log::error('Error modifying project', ['error' => $e->getMessage()]);
+            // Return error response
+            return response()->json(["message" => 'Internal server error.', "status" => 500]);
         }
     }
     
-    public function destroy(Request $request)
+public function destroy(Request $request)
     {
         try{
         $project = Project::find($request->id);
-        if($request->hasFile('projectImage')){
+        if(!empty($project->projectImage) && $project->projectImage !== null  ){
             Storage::delete($project->projectImage);
         }
-        if($request->hasFile('approvedPlan')){
+        if(!empty($project->approvedPlan) && $project->approvedPlan !== null){
             Storage::delete($project->approvedPlan);
         }
-        if($request->hasFile('brochure')){
+        if(!empty($project->brochure)  && $project->brochure !== null){
             Storage::delete($project->brochure);
         }
-        if($request->hasFile('projectNoc')){
+        if(!empty($project->projectNoc) && $project->projectNoc !== null){
             Storage::delete($project->projectNoc);
+        }
+        if(!empty($project->projectVideo) && $project->projectVideo !== null){
+            Storage::delete($project->projectVideo);
         }
         if(!$project){
             return response()->json(["message" => "Project not found.", "status" => 404]);

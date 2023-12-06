@@ -4,34 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
     use HasFactory;
-    protected $fillable  = [
-        "projectName",
-        "status",
-        'isActive',
-        "description",
-        "location", 
-        "projectVideo",
-        "projectImage",
-        "approvedPlan",
-        "brochure",
-        'projectNoc',
+    protected $guarded  = [
     ];
 
-    public static function createRules(){
+    public static function createRules()
+    {
         return [
-            'projectName'=>'string|unique:projects',
-            'status'=> 'string|in:ongoing,completed',
-            'description' => 'string',
-            'location' => 'string|max:255',
-            'projectImage'=>'required',
-            'projectVideo'=>'required',
-            'approvedPlan'=> 'required',
-            'brochure' => 'required',
-            'projectNoc' => 'required',
+            'projectName' => 'required|string|unique:projects',
+            'status' => 'required|string|in:completed,ongoing',
+            'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
+            'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
+            'projectVideo' => 'required|mimes:mp4,avi|max:500000', // Adjust file size as needed
+            'description' => 'required|string',
+            'overviewHeading' => 'required|string',
+            'overviewContent' => 'required|string',
+            'overviewFooter' => 'required|string',
+            'location' => 'required|string|max:255',
+            'withinReach' => 'required|string|max:255',
+            'withinReachImage' => 'required|mimes:jpg,png,jpeg,pdf',
+            'flatConfig' => 'required|string',
+            'brochure' => 'nullable|mimes:jpg,png,jpeg,pdf',
         ];
     }
 
@@ -39,5 +36,15 @@ class Project extends Model
         return [
             'isActive' => 'required|boolean',
         ];
+    }
+    
+    public function gallery():HasMany
+    {
+        return $this->hasMany(ProjectGallery::class, 'projectId');    
+    }
+    
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'project_amenities', 'projectId', 'amenityId');
     }
 }

@@ -24,53 +24,65 @@ use App\Http\Controllers\ProjectGalleryController;
     Route::post('signup', [UserController::class, 'signup']);
     Route::post('login', [UserController::class, 'login'])->name('login');
     Route::post('forgotpassword', [UserController::class, 'forgotPassword'])->name('forgotPassword');
-    Route::post('logout', [UserController::class, 'logout'])->name('logout');
+    Route::post('resetpassword', [UserController::class, 'resetPassword'])->name('resetpassword');
 
-    Route::group(["middleware"=>'auth:sanctum'],function () {
+    Route::get('project/getByStatus', [ProjectController::class, 'getProjectListByStatus'])->name("getProjectListByStatus");
+    Route::get('project/get/{id}', [ProjectController::class, 'getById']);
+    Route::get('project/list', [ProjectController::class, 'getList']);
+    Route::get('project/count', [ProjectController::class, 'count']);
+
+    Route::get('amenities/list', [AmenityController::class, 'index']);
+    Route::get('amenities/get/{id}', [AmenityController::class, 'show']);
+
+    Route::post('contact/create', [ContactController::class, 'create']);
+
+    Route::post('enquiry/create', [EnquiryController::class, 'create']);
+
+    Route::get('project/gallery/get/{id}', [ProjectGalleryController::class, 'index']);
+    Route::get('project/amenity/get/{id}', [ProjectAmenityController::class, 'show']);
+
+    Route::get('blog/list', [BlogController::class, 'index']);
+    Route::get('blog/get/{id}', [BlogController::class, 'show']);
+
+    Route::group(["middleware"=>'jwt.verify'],function () {
         Route::prefix('project')->group(function () {
             Route::post('create', [ProjectController::class, 'create']);
-            Route::get('{id}/get', [ProjectController::class, 'getById']);
-            Route::get('list', [ProjectController::class, 'getList']);
-            Route::put('{id}/update', [ProjectController::class, 'edit']);
-            Route::delete('{id}/delete', [ProjectController::class, 'destroy']);
+            Route::put('update/{id}', [ProjectController::class, 'edit']);
+            Route::delete('delete/{id}', [ProjectController::class, 'destroy']);
         });
         Route::prefix('amenities')->group(function () {
             Route::post('create', [AmenityController::class, 'create']);
-            Route::get('{id}/get', [AmenityController::class, 'show']);
-            Route::get('list', [AmenityController::class, 'index']);
-            Route::post('{id}/update', [AmenityController::class, 'update']);
-            Route::delete('{id}/delete', [AmenityController::class, 'destroy']);
+            Route::put('update/{id}', [AmenityController::class, 'update']);
+            Route::delete('delete/{id}', [AmenityController::class, 'destroy']);
         });
         Route::prefix('contact')->group(function () {
-            Route::post('create', [ContactController::class, 'create']);
-            Route::get('{id}/get', [ContactController::class, 'show']);
+            Route::get('get/{id}', [ContactController::class, 'show']);
             Route::get('list', [ContactController::class, 'index']);
-            Route::put('{id}/update', [ContactController::class, 'update']);
-            Route::delete('{id}/delete', [ContactController::class, 'destroy']);
+            Route::put('update/{id}', [ContactController::class, 'update']);
+            Route::delete('delete/{id}', [ContactController::class, 'destroy']);
         });
         Route::prefix('enquiry')->group(function () {
-            Route::post('create', [EnquiryController::class, 'create']);
-            Route::get('{id}/get', [EnquiryController::class, 'show']);
+            Route::get('get/{enquiryType}', [EnquiryController::class, 'show']);
             Route::get('list', [EnquiryController::class, 'index']);
-            Route::put('{id}/update', [EnquiryController::class, 'update']);
-            Route::delete('{id}/delete', [EnquiryController::class, 'destroy']);
+            Route::put('update/{id}', [EnquiryController::class, 'update']);
+            Route::delete('delete/{id}', [EnquiryController::class, 'destroy']);
         });
         Route::prefix('project/amenity')->group(function () {
             Route::post('create', [ProjectAmenityController::class, 'create']);
-            Route::get('{id}/get', [ProjectAmenityController::class, 'show']);
-            Route::delete('{id}/delete', [ProjectAmenityController::class, 'destroy']);
+            // Route::get('get/{id}', [ProjectAmenityController::class, 'show']);
+            Route::delete('{amenityId}/delete/{projectId}', [ProjectAmenityController::class, 'destroy']);
         });        
         Route::prefix('gallery')->group(function () {
-            Route::post('{id}/create', [ProjectGalleryController::class, 'create']);
-            Route::get('{id}/get', [ProjectGalleryController::class, 'index']);
-
+            //id is projectId
+            Route::post('create/{id}', [ProjectGalleryController::class, 'create']);
+            Route::delete('delete/{galleryId}', [ProjectGalleryController::class, 'deleteGalleyImageItem']);
+            Route::put('{galleryId}/update/{id}', [ProjectGalleryController::class, 'updateSpecificGalleryImage']);
         });        
         Route::prefix('blog')->group(function () {
             Route::post('create', [BlogController::class, 'create']);
-            Route::get('{id}/get', [BlogController::class, 'show']);
-            Route::get('list', [BlogController::class, 'index']);
-            Route::put('{id}/update', [BlogController::class, 'update']);
-            Route::delete('{id}/delete', [BlogController::class, 'destroy']);
+            Route::put('update/{id}', [BlogController::class, 'update']);
+            Route::delete('delete/{id}', [BlogController::class, 'destroy']);
         });
+        Route::post('logout', [UserController::class, 'logout'])->name('logout');
     });
     

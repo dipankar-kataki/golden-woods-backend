@@ -8,21 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Amenity extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "amenityName",
-        "amenityImage",
-    ];
-
+    protected $guarded = [];
     public static function createRules(){
         return [
             "amenityName"=>"required|string",
-            "amenityImage"=>"required",
+            "amenityImage"=>"required|file|mimes:avif,jpg,jpeg,png",        
         ];
     }
     public static function updateRules(){
         return [
-            "amenityName"=> "string",
-            "amenityImage"=>"file",
+            "amenityName"=>"sometimes|string",
+            "amenityImage"=>"sometimes|file|mimes:avif,jpg,jpeg,png",       
         ];
     }
 

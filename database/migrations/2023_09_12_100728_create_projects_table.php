@@ -16,14 +16,19 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string("projectName")->unique()->nullable();
-            $table->string("status")->nullable();
-            $table->string("projectImage")->nullable();
-            $table->string("projectVideo")->nullable();
-            $table->string("description")->nullable();
-            $table->string("location",255)->nullable();
-            $table->string("approvedPlan")->nullable();
+            $table->string("status");
+            $table->string("projectImage1");
+            $table->string("projectImage2");
+            $table->string("projectVideo");
+            $table->string("description");
+            $table->string("overviewHeading");
+            $table->string("overviewContent");
+            $table->string("overviewFooter");
+            $table->string("location",255);
+            $table->string("withinReach",255);
+            $table->string("withinReachImage");
+            $table->string("flatConfig");
             $table->string("brochure")->nullable();
-            $table->string("projectNoc")->nullable();
             $table->tinyInteger("isActive")->default(0);
             $table->timestamps();
         });

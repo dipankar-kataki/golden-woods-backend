@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectGallery extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "projectId",
-        "image",
+    protected $guarded = [
     ];
 
     public static function rules(){
         return [
-            "projectId"=>"required|integer|exists:projects,id",
-            "image"=>"required|string",
+            "imageType" => "required|string|in:exterior,interior,architectural",
+            "projectId" => "required|integer|exists:projects,id",
+            "image" => "required|file|mimes:avif,jpg,jpeg,png",
         ];
     }
+    
 }

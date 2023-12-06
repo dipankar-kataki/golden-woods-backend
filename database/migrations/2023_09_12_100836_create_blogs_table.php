@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string("title");
-            $table->string("blogImage");
-            $table->text("content");
+            $table->text("blogImage");
+            $table->string("author");
+            $table->longText("content");
             $table->timestamps();
         });
-    }
+    }    
 
     /**
      * Reverse the migrations.

@@ -8,18 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "name",
-        "email",
-        "subject",
-        "madeContact"
+    protected $guarded = [
+ 
     ];
 
     public static function rules(){
         return [
-            "name"=> "required|string",
-            "email"=>"required|email",
-            "madeContact"=>"nullable|boolean"
+            "name" => "required|string",
+            "phone" => "required|numeric|digits:10",
+            "email" => "sometimes|email",
+            "message" => "sometimes|string",
         ];
     }
 

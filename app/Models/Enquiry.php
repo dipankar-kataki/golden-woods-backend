@@ -15,16 +15,14 @@ class Enquiry extends Model
     {
         return [
             "name" => "required|string|max:255",
-            "email" => "required|email|max:255", // Replace with your actual table name and column name
-            "mobile" => [
-                "required",
-                "string",
-                "regex:/^[0-9]{10}$/", // Enforce 10 digits with numbers only.
-            ],
-            "message" => "nullable|string",
-            "projectId" => "nullable|integer|exists:projects,id",
+            "email" => "sometimes|email|max:255",
+            "phone" => "required|numeric|digits:10",
+            "projectId" => "sometimes|integer|exists:projects,id",
+            "flatType" => "sometimes|string|in:1bhk,2bhk,3bhk,4bhk",
+            "enquiryType" => "sometimes|in:price,general",
         ];
     }
+    
     
 
 }

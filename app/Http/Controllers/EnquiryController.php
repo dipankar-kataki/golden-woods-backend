@@ -12,9 +12,15 @@ class EnquiryController extends Controller
   
     public function index(Request $request)
     {
-        $enquiry = Enquiry::all();
-        return response()->json(["data"=> $enquiry, "status"=>200]);
+        $query = Enquiry::query();
+        if ($request->has('enquiryType')) {
+            $enquiryType = $request->enquiryType;
+            $query->where('enquiryType', $enquiryType);
+        }
+        $enquiries = $query->get();
+        return response()->json(["data" => $enquiries, "status" => 200]);
     }
+    
 
     public function create(Request $request)
     {
@@ -25,13 +31,23 @@ class EnquiryController extends Controller
             ]);
         }
         $enquiry = Enquiry::create($request->all());
-        return response()->json(["data"=> "Enquiry submitted.","status"=> 200]);
+        return response()->json(["data"=> "Enquiry submitted. We will call you back soon!","status"=> 200]);
     }
 
     public function show(Request $request)
     {
-        $enquiry = Enquiry::find($request->id);
-        return response()->json(["data"=> $enquiry,"status"=> 200]);
+        try {
+            // Select only the desired fields
+            $enquiry = Enquiry::where("enquiryType",$request->enquiryType)->get();
+    
+            if (!$enquiry) {
+                return response()->json(["message" => "Enquiry not found.", "status" => 404]);
+            }
+    
+            return response()->json(["data" => $enquiry, "status" => 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+        }
     }
 
 

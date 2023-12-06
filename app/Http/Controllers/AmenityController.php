@@ -24,7 +24,7 @@ class AmenityController extends Controller
 
         $data = [
             'amenityName' => $request->input('amenityName'),
-            'amenityImage' => $request->file('amenityImage')->store('public/amenity'), // Replace 'path_to_amenity_images' with the desired storage path.
+            'amenityImage' => $request->file('amenityImage')->store('amenity'),
         ];
 
         Amenity::create($data);
@@ -43,28 +43,24 @@ class AmenityController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make(request()->all(), Amenity::updateRules());
-        if($validator->fails()){
-            return response()->json(["message"=>"Oops!". $validator->errors(),"status"=>400]);
-        }
         if(!$request->id){
             return response()->json(["message"=> "Invalid request. Please send Id.","status"=>404]);
         }
         $amenity = Amenity::find($request->id);
+        // dump($request->input("amenityName"));
+        // dump($request->amenityName);
+
         if(empty($amenity)) {
             return response()->json(["message"=> "Requested amenity not found.","status"=>404]);
         }
         if($request->has("amenityName")){
-            $amenity->amenityName = $request->amenityName;
+            $amenity->amenityName = $request->input("amenityName");
         }
         if ($request->hasFile('amenityImage')) {
             if (Storage::exists($amenity->amenityImage)) {
                 Storage::delete($amenity->amenityImage);
             }
-         
-            $uploadedFile = $request->file('amenityImage');
-            $newFilePath = $uploadedFile->store('public/amenity'); 
-        
+            $newFilePath =  $request->file('amenityImage')->store('amenity');         
             $amenity->amenityImage = $newFilePath;
         }
         $amenity->save();

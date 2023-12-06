@@ -21,8 +21,8 @@
             We have sent you this email in response to your request to reset
             your password for golden woods admin panel
           </p>
-          <p>To reset your password, please follow the link below:</p>
-          <a href={{$passwordResetLink}} class="reset__btn">Reset Password</a>
+          <p>To reset your password, please copy the token below:</p>
+          <p>{{ $passwordResetLink }}</p>
         </div>
         <footer class="footer-container">
           <div class="footer__content">

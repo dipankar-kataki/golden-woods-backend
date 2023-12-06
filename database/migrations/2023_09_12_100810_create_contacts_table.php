@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->string("name")->nullable(false);
+            $table->string("phone", 10)->nullable(false);
             $table->string("email")->nullable(false);
             $table->tinyInteger("madeContact")->default(0);
-            $table->text("subject");
+            $table->text("message");
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *
