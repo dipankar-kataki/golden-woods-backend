@@ -47,7 +47,6 @@ class ProjectController extends Controller
             if ($validator->fails()) {
                 return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
             }
-
             $projectData = [
                 'projectName' => $request->projectName,
                 'status' => $request->status,
@@ -62,7 +61,7 @@ class ProjectController extends Controller
                 'overviewFooter' => $request->overviewFooter,
                 'withinReach' => $request->withinReach,
                 'withinReachImage' => $request->file('withinReachImage')->store('image'),
-                'flatConfig' => $request->flatConfig,
+                'flatConfig' => json_encode($request->flatConfig),
             ];
 
             if ($request->hasFile('brochure')) {
@@ -91,17 +90,13 @@ class ProjectController extends Controller
                     $query->whereIn('imageType', ['architectural', 'interior', 'exterior']);
                 }
             ])->find($projectId);
-            dump($project);
 
             if (!$project) {
                 return response()->json(['message' => 'Project not found'], 404);
             }
-
+            $project->flatConfig = json_decode($project->flatConfig);
             $galleryImages = $project->gallery;
 
-            if ($galleryImages->isEmpty()) {
-                return response()->json(['message' => 'No gallery images found for the project'], 200);
-            }
 
             // Continue processing or return the response with project and gallery details        
             $projectImages = [
@@ -156,9 +151,11 @@ class ProjectController extends Controller
                 return response()->json(["message" => "Project not found.", "status" => 404]);
             }
             // Update project fields
-            $project->fill($request->only(['projectName', 'flatSize', 'status', 'description', 'location', 'isActive']));
+            $project->fill($request->only(['projectName', 'flatConfig', 'status', 'description', 'location', 'isActive']));
             // Update file fields
-            foreach (['projectImage', 'approvedPlan', 'brochure', 'projectNoc', 'projectVideo'] as $fileField) {
+            $project->flatConfig = json_encode($request->flatConfig);
+
+            foreach (['projectImage1', 'projectImage2', 'brochure', 'projectThumbnail', 'projectVideo', "withinReachImage"] as $fileField) {
                 if ($request->hasFile($fileField)) {
                     $oldFilePath = $project->{$fileField};
                     if ($oldFilePath && Storage::exists($oldFilePath)) {
@@ -170,7 +167,7 @@ class ProjectController extends Controller
             // Save changes
             $project->save();
             // Return response
-            return response()->json(["message" => "Project modified.", "data" => $project, "status" => 200]);
+            return response()->json(["message" => "Project modified.", "status" => 200]);
         } catch (\Exception $e) {
             // Log error
             Log::error('Error modifying project', ['error' => $e->getMessage()]);

@@ -11,12 +11,12 @@ class ProjectGallery extends Model
     protected $guarded = [
     ];
 
-    public static function rules(){
+    public static function rules()
+    {
         return [
             "imageType" => "required|string|in:exterior,interior,architectural",
-            "projectId" => "required|integer|exists:projects,id",
-            "image" => "required|file|mimes:avif,jpg,jpeg,png",
+            "image" => "required",
         ];
     }
-    
+
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Project extends Model
 {
     use HasFactory;
-    protected $guarded  = [
+    protected $guarded = [
     ];
 
     public static function createRules()
@@ -19,7 +19,7 @@ class Project extends Model
             'status' => 'required|string|in:completed,ongoing',
             'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
-            'projectVideo' => 'required|mimes:mp4,avi|max:500000', // Adjust file size as needed
+            'projectVideo' => 'required|mimes:mp4,avi|max:500000',
             'description' => 'required|string',
             'overviewHeading' => 'required|string',
             'overviewContent' => 'required|string',
@@ -32,17 +32,18 @@ class Project extends Model
         ];
     }
 
-    public static function hideRules(){
+    public static function hideRules()
+    {
         return [
             'isActive' => 'required|boolean',
         ];
     }
-    
-    public function gallery():HasMany
+
+    public function gallery(): HasMany
     {
-        return $this->hasMany(ProjectGallery::class, 'projectId');    
+        return $this->hasMany(ProjectGallery::class, 'projectId');
     }
-    
+
     public function amenities()
     {
         return $this->belongsToMany(Amenity::class, 'project_amenities', 'projectId', 'amenityId');

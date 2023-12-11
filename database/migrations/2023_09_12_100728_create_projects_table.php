@@ -20,12 +20,12 @@ return new class extends Migration {
             $table->string("projectImage2");
             $table->string("projectVideo");
             $table->string("projectThumbnail");
-            $table->string("description");
-            $table->string("overviewHeading");
-            $table->string("overviewContent");
-            $table->string("overviewFooter");
-            $table->string("location", 255);
-            $table->string("withinReach", 255);
+            $table->text("description");
+            $table->text("overviewHeading");
+            $table->text("overviewContent");
+            $table->text("overviewFooter");
+            $table->string("location");
+            $table->text("withinReach");
             $table->string("withinReachImage");
             $table->string("flatConfig");
             $table->string("brochure")->nullable();
