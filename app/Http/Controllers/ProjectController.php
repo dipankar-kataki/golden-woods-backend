@@ -89,11 +89,7 @@ class ProjectController extends Controller
     {
         try {
             $projectId = $request->id;
-            $project = Project::with([
-                'gallery' => function ($query) {
-                    $query->whereIn('imageType', ['architectural', 'interior', 'exterior']);
-                }
-            ])->find($projectId);
+            $project = Project::find($projectId);
 
             if (!$project) {
                 return response()->json(['message' => 'Project not found'], 404);
@@ -101,7 +97,8 @@ class ProjectController extends Controller
             $project->flatConfig = json_decode($project->flatConfig);
             $project->withinReach = json_decode($project->withinReach);
 
-            // Continue processing or return the response with project and gallery details        
+            // Continue processing or return the response with project and gallery details 
+
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
@@ -113,8 +110,8 @@ class ProjectController extends Controller
                     ->where('imageType', 'interior')
                     ->toArray(),
             ];
-            $project["images"] = $projectImages;
-            return response()->json(["data" => $project, "status" => 200]);
+            $projectImages;
+            return response()->json(["data" => ["project" => $project, "images" => $projectImages], "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
