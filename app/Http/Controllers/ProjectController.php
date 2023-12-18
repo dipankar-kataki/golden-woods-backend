@@ -52,6 +52,7 @@ class ProjectController extends Controller
                 'status' => $request->status,
                 'description' => $request->description,
                 'location' => $request->location,
+                'projectBanner' => $request->file('projectBanner')->store('banner'),
                 'projectImage1' => $request->file('projectImage1')->store('image'),
                 'projectImage2' => $request->file('projectImage2')->store('image'),
                 'projectThumbnail' => $request->file('projectThumbnail')->store('thumbnails'),
