@@ -105,7 +105,7 @@ class ProjectController extends Controller
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
-                    ->toArray(), // Convert collection to array
+                    ->toArray(),
                 'exterior' => $project->gallery
                     ->where('imageType', 'exterior')
                     ->toArray(),
