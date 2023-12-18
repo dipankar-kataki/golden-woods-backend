@@ -102,21 +102,18 @@ class ProjectController extends Controller
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
-                    ->map(function ($item) {
-                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
-                    })->all(),
+                    ->toArray(),
                 'exterior' => $project->gallery
                     ->where('imageType', 'exterior')
-                    ->map(function ($item) {
-                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
-                    })->all(),
+                    ->toArray(),
                 'interior' => $project->gallery
                     ->where('imageType', 'interior')
-                    ->map(function ($item) {
-                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
-                    })->all(),
+                    ->toArray(),
             ];
-            $projectImages;
+            $projectImages['architectural'] = array_values($projectImages['architectural']);
+            $projectImages['exterior'] = array_values($projectImages['exterior']);
+            $projectImages['interior'] = array_values($projectImages['interior']);
+
             return response()->json(["data" => ["project" => $project, "images" => $projectImages], "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
