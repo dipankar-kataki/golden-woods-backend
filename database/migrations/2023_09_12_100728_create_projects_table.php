@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string("status");
             $table->string("projectImage1");
             $table->string("projectImage2");
-            $table->string("projectVideo");
+            $table->string("projectVideo")->nullable();
             $table->string("projectThumbnail");
             $table->text("description");
             $table->text("overviewHeading");
