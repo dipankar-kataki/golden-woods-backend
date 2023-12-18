@@ -19,7 +19,7 @@ class Project extends Model
             'status' => 'required|string|in:completed,ongoing',
             'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
-            'projectVideo' => 'required|mimes:mp4,avi|max:500000',
+            'projectVideo' => 'nullable|mimes:mp4,avi|max:500000',
             'description' => 'required|string',
             'overviewHeading' => 'required|string',
             'overviewContent' => 'required|string',
