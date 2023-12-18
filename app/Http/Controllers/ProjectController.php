@@ -60,7 +60,7 @@ class ProjectController extends Controller
                 'overviewFooter' => $request->overviewFooter,
                 'withinReach' => $request->withinReach,
                 'withinReachImage' => $request->file('withinReachImage')->store('image'),
-                'flatConfig' => json_encode($request->flatConfig),
+                'flatConfig' => $request->flatConfig,
             ];
             if ($request->hasFile('projectVideo')) {
                 $projectData["projectVideo"] = $request->file('projectVideo')->store('video');
