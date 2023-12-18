@@ -54,7 +54,6 @@ class ProjectController extends Controller
                 'location' => $request->location,
                 'projectImage1' => $request->file('projectImage1')->store('image'),
                 'projectImage2' => $request->file('projectImage2')->store('image'),
-                'projectVideo' => $request->file('projectVideo')->store('video'),
                 'projectThumbnail' => $request->file('projectThumbnail')->store('video'),
                 'overviewHeading' => $request->overviewHeading,
                 'overviewContent' => $request->overviewContent,
@@ -63,7 +62,9 @@ class ProjectController extends Controller
                 'withinReachImage' => $request->file('withinReachImage')->store('image'),
                 'flatConfig' => json_encode($request->flatConfig),
             ];
-
+            if ($request->hasFile('projectVideo')) {
+                $projectData["projectVideo"] = $request->file('projectVideo')->store('video');
+            }
             if ($request->hasFile('brochure')) {
                 $projectData["brochure"] = $request->file('brochure')->store('brochures');
             }
