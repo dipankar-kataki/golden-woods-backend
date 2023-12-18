@@ -54,7 +54,7 @@ class ProjectController extends Controller
                 'location' => $request->location,
                 'projectImage1' => $request->file('projectImage1')->store('image'),
                 'projectImage2' => $request->file('projectImage2')->store('image'),
-                'projectThumbnail' => $request->file('projectThumbnail')->store('video'),
+                'projectThumbnail' => $request->file('projectThumbnail')->store('thumbnails'),
                 'overviewHeading' => $request->overviewHeading,
                 'overviewContent' => $request->overviewContent,
                 'overviewFooter' => $request->overviewFooter,
