@@ -17,10 +17,11 @@ class EnquiryController extends Controller
             $enquiryType = $request->enquiryType;
             $query->where('enquiryType', $enquiryType);
         }
+        // Order by the created_at column in descending order (latest first)
+        $query->latest('created_at');
         $enquiries = $query->get();
         return response()->json(["data" => $enquiries, "status" => 200]);
     }
-
 
     public function create(Request $request)
     {
