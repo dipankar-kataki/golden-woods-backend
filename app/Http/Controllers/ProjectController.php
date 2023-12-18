@@ -102,13 +102,13 @@ class ProjectController extends Controller
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
-                ,
+                    ->toArray(),
                 'exterior' => $project->gallery
                     ->where('imageType', 'exterior')
-                ,
+                    ->toArray(),
                 'interior' => $project->gallery
                     ->where('imageType', 'interior')
-
+                    ->toArray(),
             ];
             $projectImages['architectural'] = array_values($projectImages['architectural']);
             $projectImages['exterior'] = array_values($projectImages['exterior']);
