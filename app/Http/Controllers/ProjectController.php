@@ -114,7 +114,7 @@ class ProjectController extends Controller
                     ->toArray(),
             ];
             $project["images"] = $projectImages;
-            return response()->json(["data" => ['project' => $project], "status" => 200]);
+            return response()->json(["data" => $project, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
