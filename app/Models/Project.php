@@ -20,6 +20,7 @@ class Project extends Model
         return [
             'projectName' => 'required|string|unique:projects',
             'status' => 'required|string|in:completed,ongoing',
+            'projectBanner' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectVideo' => 'nullable|mimes:mp4,avi|max:500000',
