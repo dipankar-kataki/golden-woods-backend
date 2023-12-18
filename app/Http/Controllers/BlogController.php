@@ -75,7 +75,7 @@ class BlogController extends Controller
             }
 
             // Find the blog by its ID
-            $blog = Blog::find($request->input("id"));
+            $blog = Blog::find($request->id);
 
             // Check if the blog exists
             if (!$blog) {
