@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -15,7 +16,7 @@ class BlogController extends Controller
         try {
             // Fetch all blogs in descending order of creation date
             $blogs = Blog::orderBy('created_at', 'desc')->get();
-    
+
             return response()->json(["data" => $blogs, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
@@ -27,11 +28,11 @@ class BlogController extends Controller
         try {
             // Validate the request data
             $validator = Validator::make($request->all(), Blog::createRules());
-    
+
             if ($validator->fails()) {
                 return response()->json(["message" => "Validation failed", "errors" => $validator->errors(), "status" => 400]);
             }
-    
+
             // Create a new blog record
             $blog = Blog::create([
                 'title' => $request->input('title'),
@@ -39,7 +40,7 @@ class BlogController extends Controller
                 'author' => $request->input('author'),
                 'content' => $request->input('content'),
             ]);
-    
+
             return response()->json(["message" => "Blog created successfully", "status" => 201, "data" => $blog]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
@@ -51,7 +52,7 @@ class BlogController extends Controller
         try {
             // Use Eloquent's findOrFail to get a blog by its ID
             $blog = Blog::findOrFail($request->input("id"));
-    
+
             return response()->json(["data" => $blog, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Blog not found.', "status" => 404]);
@@ -68,14 +69,14 @@ class BlogController extends Controller
                 'author' => 'nullable|string',
                 'content' => 'nullable|string',
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json(["message" => "Validation failed", "errors" => $validator->errors(), "status" => 400]);
             }
-    
+
             // Find the blog by its ID
             $blog = Blog::findOrFail($request->input("id"));
-    
+
             // Update the blog with the new data
             $blog->update([
                 'title' => $request->input('title') ?? $blog->title,
@@ -83,28 +84,28 @@ class BlogController extends Controller
                 'author' => $request->input('author') ?? $blog->author,
                 'content' => $request->input('content') ?? $blog->content,
             ]);
-    
+
             return response()->json(["message" => "Blog updated successfully", "status" => 200, "data" => $blog]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
     }
-    
+
     public function destroy(Request $request)
-{
-    try {
-        // Get the blog ID from the request
-        $blogId = $request->input('blogId');
+    {
+        try {
+            // Get the blog ID from the request
+            $blogId = $request->input('blogId');
 
-        // Find the blog by its ID
-        $blog = Blog::findOrFail($blogId);
+            // Find the blog by its ID
+            $blog = Blog::findOrFail($blogId);
 
-        // Delete the blog
-        $blog->delete();
+            // Delete the blog
+            $blog->delete();
 
-        return response()->json(["message" => "Blog deleted successfully", "status" => 200]);
-    } catch (\Exception $e) {
-        return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+            return response()->json(["message" => "Blog deleted successfully", "status" => 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+        }
     }
-}
 }
