@@ -84,9 +84,9 @@ class BlogController extends Controller
 
             // Update only changed fields
             $dataToUpdate = [
-                'title' => $request->input('title') ?? $blog->title,
-                'author' => $request->input('author') ?? $blog->author,
-                'content' => $request->input('content') ?? $blog->content,
+                'title' => $request->title ?? $blog->title,
+                'author' => $request->author ?? $blog->author,
+                'content' => $request->content ?? $blog->content,
             ];
 
             // Update blog image if a new one is provided
