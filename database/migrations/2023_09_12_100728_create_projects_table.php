@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string("projectName")->unique()->nullable();
             $table->string("status");
-            $table->string("projectBanner");
+            $table->string("projectBanner")->nullable();
             $table->string("projectImage1");
             $table->string("projectImage2");
             $table->string("projectVideo")->nullable();
