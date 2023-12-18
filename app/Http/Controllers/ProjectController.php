@@ -96,7 +96,7 @@ class ProjectController extends Controller
                 return response()->json(['message' => 'Project not found'], 404);
             }
             $project->flatConfig = json_decode($project->flatConfig);
-            $project->withinReach = json_decode($project->flatConfig);
+            $project->withinReach = json_decode($project->withinReach);
 
             $galleryImages = $project->gallery;
 
