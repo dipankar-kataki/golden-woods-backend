@@ -107,8 +107,8 @@ class ProjectController extends Controller
                 'exterior' => $project->gallery->where('imageType', 'exterior'),
                 'interior' => $project->gallery->where('imageType', 'interior'),
             ];
-
-            return response()->json(["data" => ['project' => $project, 'images' => $projectImages], "status" => 200]);
+            $project["images"] = $projectImages;
+            return response()->json(["data" => ['project' => $project], "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
