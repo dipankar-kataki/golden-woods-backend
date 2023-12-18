@@ -83,21 +83,17 @@ class BlogController extends Controller
             }
 
             // Update only changed fields
-            $dataToUpdate = [
-                'title' => $request->title ?? $blog->title,
-                'author' => $request->author ?? $blog->author,
-                'content' => $request->content ?? $blog->content,
-            ];
+            $blog->title = $request->title ?? $blog->title;
+            $blog->author = $request->author ?? $blog->author;
+            $blog->content = $request->content ?? $blog->content;
 
             // Update blog image if a new one is provided
             if ($request->hasFile('blogImage')) {
-                $dataToUpdate['blogImage'] = $request->file('blogImage')->storeAs('blog_images', uniqid() . '_' . $request->file('blogImage')->getClientOriginalName());
-            } else {
-                $dataToUpdate['blogImage'] = $blog->blogImage;
+                $blog->blogImage = $request->file('blogImage')->storeAs('blog_images', uniqid() . '_' . $request->file('blogImage')->getClientOriginalName());
             }
 
-            // Update the blog with the new data
-            $blog->update($dataToUpdate);
+            // Save the updated blog
+            $blog->save();
 
             return response()->json(["message" => "Blog updated successfully", "status" => 200, "data" => $blog]);
         } catch (\Exception $e) {
