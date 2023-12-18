@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class EnquiryController extends Controller
 {
-  
+
     public function index(Request $request)
     {
         $query = Enquiry::query();
@@ -20,30 +20,34 @@ class EnquiryController extends Controller
         $enquiries = $query->get();
         return response()->json(["data" => $enquiries, "status" => 200]);
     }
-    
+
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), Enquiry::rules());
-        if ($validator->fails()) {
-            return response()->json([
-                "message" => 'Oops!' . $validator->errors()->first(), "status" => 400
-            ]);
+        try {
+            $validator = Validator::make($request->all(), Enquiry::rules());
+            if ($validator->fails()) {
+                return response()->json([
+                    "message" => 'Oops!' . $validator->errors()->first(), "status" => 400
+                ]);
+            }
+            $enquiry = Enquiry::create($request->all());
+            return response()->json(["data" => "Enquiry submitted. We will call you back soon!", "status" => 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
-        $enquiry = Enquiry::create($request->all());
-        return response()->json(["data"=> "Enquiry submitted. We will call you back soon!","status"=> 200]);
     }
 
     public function show(Request $request)
     {
         try {
             // Select only the desired fields
-            $enquiry = Enquiry::where("enquiryType",$request->enquiryType)->get();
-    
+            $enquiry = Enquiry::where("enquiryType", $request->enquiryType)->get();
+
             if (!$enquiry) {
                 return response()->json(["message" => "Enquiry not found.", "status" => 404]);
             }
-    
+
             return response()->json(["data" => $enquiry, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
@@ -55,22 +59,22 @@ class EnquiryController extends Controller
     {
         // Find the Enquiry record by its ID.
         $enquiry = Enquiry::find($request->id);
-    
+
         // Check if the Enquiry record exists.
         if (!$enquiry) {
             return response()->json(["message" => "Enquiry not found.", "status" => 404]);
         }
-    
+
         // Check if the 'madeEnquiry' field is present in the request and update it.
         if ($request->has("madeEnquiry")) {
             $enquiry->madeEnquiry = $request->madeEnquiry;
             $enquiry->save();
         }
-    
+
         // Return a JSON response indicating success.
         return response()->json(["message" => "Enquiry updated successfully.", "status" => 200]);
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -81,11 +85,11 @@ class EnquiryController extends Controller
     public function destroy(Request $request)
     {        //
         $enquiry = Enquiry::find($request->id);
-        if(!$enquiry){
-            return response()->json(["message"=>"Enquiry not found.", "status"=>200]);
+        if (!$enquiry) {
+            return response()->json(["message" => "Enquiry not found.", "status" => 200]);
         }
         $enquiry->delete();
-        return response()->json(["message"=> "Enquiry deleted.","status"=> 200]);
+        return response()->json(["message" => "Enquiry deleted.", "status" => 200]);
 
     }
 }
