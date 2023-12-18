@@ -69,27 +69,37 @@ class BlogController extends Controller
                 'author' => 'nullable|string',
                 'content' => 'nullable|string',
             ]);
-
+    
             if ($validator->fails()) {
-                return response()->json(["message" => "Validation failed", "errors" => $validator->errors(), "status" => 400]);
+                return response()->json(["message" => "Validation failed", "errors" => $validator->errors(), "status" => 422]);
             }
-
+    
             // Find the blog by its ID
-            $blog = Blog::findOrFail($request->input("id"));
-
-            // Update the blog with the new data
-            $blog->update([
+            $blog = Blog::find($request->input("id"));
+    
+            // Update only changed fields
+            $dataToUpdate = [
                 'title' => $request->input('title') ?? $blog->title,
-                'blogImage' => $request->hasFile('blogImage') ? $request->file('blogImage')->store('blog_images') : $blog->blogImage,
                 'author' => $request->input('author') ?? $blog->author,
                 'content' => $request->input('content') ?? $blog->content,
-            ]);
-
+            ];
+    
+            // Update blog image if a new one is provided
+            if ($request->hasFile('blogImage')) {
+                $dataToUpdate['blogImage'] = $request->file('blogImage')->storeAs('blog_images', uniqid() . '_' . $request->file('blogImage')->getClientOriginalName());
+            } else {
+                $dataToUpdate['blogImage'] = $blog->blogImage;
+            }
+    
+            // Update the blog with the new data
+            $blog->update($dataToUpdate);
+    
             return response()->json(["message" => "Blog updated successfully", "status" => 200, "data" => $blog]);
         } catch (\Exception $e) {
-            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+            return response()->json(["message" => 'Oops! Something went wrong. ' . $e->getMessage(), "status" => 500]);
         }
     }
+    
 
     public function destroy(Request $request)
     {
