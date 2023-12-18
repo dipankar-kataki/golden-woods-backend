@@ -13,6 +13,7 @@ class Project extends Model
     ];
     protected $casts = [
         "flatConfig" => "array",
+        "withinReach" => "array",
     ];
     public static function createRules()
     {
