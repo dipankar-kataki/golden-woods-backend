@@ -102,13 +102,19 @@ class ProjectController extends Controller
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
-                    ->toArray(),
+                    ->map(function ($item) {
+                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
+                    })->all(),
                 'exterior' => $project->gallery
                     ->where('imageType', 'exterior')
-                    ->toArray(),
+                    ->map(function ($item) {
+                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
+                    })->all(),
                 'interior' => $project->gallery
                     ->where('imageType', 'interior')
-                    ->toArray(),
+                    ->map(function ($item) {
+                        return ($item instanceof \Illuminate\Database\Eloquent\Model) ? $item->toArray() : $item;
+                    })->all(),
             ];
             $projectImages;
             return response()->json(["data" => ["project" => $project, "images" => $projectImages], "status" => 200]);
