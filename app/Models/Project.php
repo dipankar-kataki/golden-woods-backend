@@ -28,7 +28,7 @@ class Project extends Model
             'overviewContent' => 'required|string',
             'overviewFooter' => 'required|string',
             'location' => 'required|string|max:255',
-            'withinReach' => 'required|string|max:255',
+            'withinReach' => 'required|string',
             'withinReachImage' => 'required|mimes:jpg,png,jpeg,pdf',
             'flatConfig' => 'required|string',
             'brochure' => 'nullable|mimes:jpg,png,jpeg,pdf',
