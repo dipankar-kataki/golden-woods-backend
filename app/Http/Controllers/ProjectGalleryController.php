@@ -40,7 +40,7 @@ class ProjectGalleryController extends Controller
             $data = $file->store('gallery');  // store() method automatically generates a unique filename
             ProjectGallery::create([
                 "projectId" => $request->id,
-                "images" => $data,
+                "image" => $data,
                 "imageType" => $request->imageType,
             ]);
         }
