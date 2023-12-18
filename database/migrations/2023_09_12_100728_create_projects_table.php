@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string("location");
             $table->text("withinReach");
             $table->string("withinReachImage");
-            $table->string("flatConfig");
+            $table->text("flatConfig");
             $table->string("brochure")->nullable();
             $table->tinyInteger("isActive")->default(0);
             $table->timestamps();
