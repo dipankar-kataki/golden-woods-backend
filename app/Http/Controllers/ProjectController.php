@@ -103,9 +103,15 @@ class ProjectController extends Controller
 
             // Continue processing or return the response with project and gallery details        
             $projectImages = [
-                'architectural' => $project->gallery->where('imageType', 'architectural'),
-                'exterior' => $project->gallery->where('imageType', 'exterior'),
-                'interior' => $project->gallery->where('imageType', 'interior'),
+                'architectural' => $project->gallery
+                    ->where('imageType', 'architectural')
+                    ->toArray(), // Convert collection to array
+                'exterior' => $project->gallery
+                    ->where('imageType', 'exterior')
+                    ->toArray(),
+                'interior' => $project->gallery
+                    ->where('imageType', 'interior')
+                    ->toArray(),
             ];
             $project["images"] = $projectImages;
             return response()->json(["data" => ['project' => $project], "status" => 200]);
