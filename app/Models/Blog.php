@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     use HasFactory;
-    protected $guarded= [];
+    protected $table = "blogs";
+
+    protected $guarded = [];
     public static function createRules()
     {
         return [
@@ -18,5 +20,5 @@ class Blog extends Model
             'content' => 'required|string',
         ];
     }
-    
+
 }
