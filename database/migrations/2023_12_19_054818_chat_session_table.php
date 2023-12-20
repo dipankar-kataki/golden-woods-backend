@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string("name");
             $table->string("phone", 10);
+            $table->string("preferredMode");
             $table->string("email")->nullable();
             $table->unsignedBigInteger("question");
             $table->foreign("question")->references("id")->on("chat_question");
