@@ -29,21 +29,26 @@ class ChatQuestionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), ChatQuestion::createRules());
+
+            $validator = Validator::make($request->all(), ChatQuestion::createRule());
 
             if ($validator->fails()) {
                 return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
             }
+            // dump($request);
+
             DB::beginTransaction();
-            ChatQuestion::create($request->all());
+            $chatQuestionData = $request->only('question', 'questionNumber');
+            ChatQuestion::create($chatQuestionData);
             DB::commit();
+
             return response()->json(['message' => 'Chat question created successfully', 'status' => 201]);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(["message" => 'Internal server error.', "status" => 500]);
+            return response()->json(["message" => 'Internal server error.' . $e->getMessage(), "status" => 500]);
         }
     }
 

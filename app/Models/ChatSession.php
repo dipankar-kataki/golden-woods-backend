@@ -14,11 +14,24 @@ class ChatSession extends Model
     public static function createRule()
     {
         return [
-            'name' => 'required|string',
-            'phone' => 'required|string|size:10', // Assuming phone is a string with a length of 10
-            'email' => 'nullable|email',
+            'web_user' => 'required|exists:web_user,id',
             'question' => 'required|exists:chat_question,id',
             'answer' => 'required|exists:chat_answer,id',
         ];
     }
+    public function webUser()
+    {
+        return $this->belongsTo(WebUser::class, 'web_user');
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(ChatQuestion::class, 'question');
+    }
+
+    public function answer()
+    {
+        return $this->belongsTo(ChatAnswer::class, 'answer');
+    }
+
 }

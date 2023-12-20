@@ -14,9 +14,10 @@ return new class extends Migration {
     {
         Schema::create('chat_answer', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("question");
+            $table->unsignedBigInteger("question")->unsigned();
             $table->foreign("question")->references("id")->on("chat_question");
             $table->text("answer");
+            $table->index('id');
         });
     }
 

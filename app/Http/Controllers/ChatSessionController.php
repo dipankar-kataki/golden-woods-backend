@@ -31,7 +31,7 @@ class ChatSessionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), ChatQuestion::createRules());

@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ChatAnswerController;
+use App\Http\Controllers\ChatQuestionController;
+use App\Http\Controllers\ChatSessionController;
+use App\Http\Controllers\WebUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -45,6 +49,10 @@ Route::get('project/amenity/get/{id}', [ProjectAmenityController::class, 'show']
 Route::get('blog/list', [BlogController::class, 'index']);
 Route::get('blog/get/{id}', [BlogController::class, 'show']);
 
+Route::post('chatsession/create', [ChatSessionController::class, 'create']);
+Route::post('chatquestion/get/{id}', [ChatQuestionController::class, 'show']);
+Route::post('chatsession/webuser/create', [WebUserController::class, 'create']);
+
 Route::group(["middleware" => 'jwt.verify'], function () {
     Route::prefix('project')->group(function () {
         Route::post('create', [ProjectController::class, 'create']);
@@ -83,6 +91,28 @@ Route::group(["middleware" => 'jwt.verify'], function () {
         Route::post('create', [BlogController::class, 'create']);
         Route::put('update/{id}', [BlogController::class, 'update']);
         Route::delete('delete/{id}', [BlogController::class, 'destroy']);
+    });
+    Route::prefix('chatanswers')->group(function () {
+        Route::post('create', [ChatAnswerController::class, 'create']);
+        Route::put('update/{id}', [ChatAnswerController::class, 'update']);
+        Route::delete('delete/{id}', [ChatAnswerController::class, 'destroy']);
+    });
+    Route::prefix('chatquestions')->group(function () {
+        Route::post('create', [ChatQuestionController::class, 'create']);
+        Route::get('get/list', [ChatQuestionController::class, 'index']);
+
+        Route::put('update/{id}', [ChatQuestionController::class, 'update']);
+        Route::delete('delete/{id}', [ChatQuestionController::class, 'destroy']);
+    });
+    Route::prefix('chatsession')->group(function () {
+        Route::post('create', [ChatSessionController::class, 'create']);
+        Route::put('update/{id}', [ChatSessionController::class, 'update']);
+        Route::delete('delete/{id}', [ChatSessionController::class, 'destroy']);
+    });
+    Route::prefix('web_user')->group(function () {
+        Route::get('get', [WebUserController::class, 'index']);
+        Route::get('create', [WebUserController::class, 'create']);
+
     });
     Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });

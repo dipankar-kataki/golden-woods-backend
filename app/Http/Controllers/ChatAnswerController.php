@@ -13,7 +13,7 @@ class ChatAnswerController extends Controller
     public function index()
     {
         try {
-            $chatQuestions = ChatQuestion::all();
+            $chatQuestions = ChatAnswer::all();
             return response()->json(['chatQuestions' => $chatQuestions, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
@@ -23,17 +23,17 @@ class ChatAnswerController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $chatAnswer = ChatQuestion::findOrFail($id);
+            $chatAnswer = ChatAnswer::find($id);
             return response()->json(['chatAnswer' => $chatAnswer, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
         }
     }
-
+  
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), ChatQuestion::createRules());
+            $validator = Validator::make($request->all(), ChatAnswer::createRules());
 
             if ($validator->fails()) {
                 return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
@@ -51,7 +51,7 @@ class ChatAnswerController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $chatAnswer = ChatQuestion::find($id);
+            $chatAnswer = ChatAnswer::find($id);
             if (!$chatAnswer) {
                 return response()->json(['message' => 'Chat answer not found.', 'status' => 400]);
             }

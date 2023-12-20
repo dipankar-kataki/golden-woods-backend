@@ -13,8 +13,12 @@ class ChatAnswer extends Model
     public static function createRule()
     {
         return [
-            'question' => 'required|string',
+            'question' => 'required|exist:chat_question,id',
             'answer' => 'required|string|size:10',
         ];
+    }
+    public function question()
+    {
+        return $this->belongsTo(ChatQuestion::class, 'question');
     }
 }

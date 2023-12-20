@@ -10,10 +10,12 @@ return new class extends Migration {
     {
         Schema::create('chat_question', function (Blueprint $table) {
             $table->id();
-            $table->decimal("questionNumber");
+            $table->integer("questionNumber");
+            $table->string("questionType");
             $table->text("question");
             $table->timestamps();
             $table->unique("questionNumber");
+            $table->index('id');
         });
     }
 

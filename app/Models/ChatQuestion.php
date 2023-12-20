@@ -9,11 +9,16 @@ class ChatQuestion extends Model
 {
     use HasFactory;
     protected $table = "chat_question";
+    protected $guarded = [];
     public static function createRule()
     {
         return [
-            'questionNumber' => 'required|numeric|unique:chat_question',
+            'questionNumber' => 'required|numeric',
             'question' => 'required|string',
         ];
+    }
+    public function answers()
+    {
+        return $this->hasMany(ChatAnswer::class, 'question');
     }
 }
