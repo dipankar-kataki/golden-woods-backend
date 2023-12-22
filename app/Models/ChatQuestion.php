@@ -9,6 +9,8 @@ class ChatQuestion extends Model
 {
     use HasFactory;
     protected $table = "chat_question";
+
+    protected $hidden = ['created_at', 'updated_at'];
     protected $guarded = [];
     public static function createRule()
     {

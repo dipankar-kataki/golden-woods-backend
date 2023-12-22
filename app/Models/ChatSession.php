@@ -14,9 +14,9 @@ class ChatSession extends Model
     public static function createRule()
     {
         return [
-            'web_user' => 'required|exists:web_user,id',
-            'question' => 'required|exists:chat_question,id',
-            'answer' => 'required|exists:chat_answer,id',
+            'user_id' => 'required|exists:web_user,id',
+            'question_id' => 'required|exists:chat_question,id',
+            'answer' => 'required|string',
         ];
     }
     public function webUser()

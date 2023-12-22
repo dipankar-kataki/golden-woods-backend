@@ -22,8 +22,13 @@ class ChatQuestionController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $chatQuestion = ChatQuestion::findOrFail($id);
-            return response()->json(['chatQuestion' => $chatQuestion, "status" => 200]);
+            $chatQuestion = ChatQuestion::find($id)->with("answers")->get();
+
+            $chatQuestionLength = ChatQuestion::count();
+            if ($chatQuestionLength < $id) {
+                return response()->json(['chatQuestion' => null, "message" => "Thank you for your time. Our team will contact you shortly.", "status" => 200]);
+            }
+            return response()->json(["data" => ['chatQuestion' => $chatQuestion], "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
         }

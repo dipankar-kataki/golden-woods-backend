@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WebUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class WebUserController extends Controller
@@ -15,14 +16,17 @@ class WebUserController extends Controller
             if ($validator->fails()) {
                 return response()->json(["message" => 'Oops!' . $validator->errors()->first(), "status" => 400]);
             }
+            DB::beginTransaction();
             $user = WebUser::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
                 'preferredMode' => $request->input('preferredMode'),
             ]);
-            return response()->json(["data" => "Admin created successfully", "status" => 201]);
+            DB::commit();
+            return response()->json(["data" => ["user" => $user->id], "message" => "user created successfully", "status" => 201]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
     }
@@ -71,5 +75,5 @@ class WebUserController extends Controller
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
     }
-  
+
 }

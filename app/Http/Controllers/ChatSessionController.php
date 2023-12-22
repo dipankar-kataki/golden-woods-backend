@@ -25,6 +25,8 @@ class ChatSessionController extends Controller
     {
         try {
             $chatSession = ChatSession::findOrFail($id);
+            $chatQuestionLength = ChatQuestion::count();
+
             return response()->json(['chatQuestion' => $chatSession, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
@@ -34,14 +36,16 @@ class ChatSessionController extends Controller
     public function create(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), ChatQuestion::createRules());
+            $validator = Validator::make($request->all(), ChatSession::createRule());
 
             if ($validator->fails()) {
                 return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
             }
+
             DB::beginTransaction();
-            ChatQuestion::create($request->all());
+            ChatSession::create($request->all());
             DB::commit();
+
             return response()->json(['message' => 'Chat session saved successfully', 'status' => 201]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -49,10 +53,11 @@ class ChatSessionController extends Controller
         }
     }
 
+
     public function update(Request $request, $id)
     {
         try {
-            $chatQuestion = ChatQuestion::find($id);
+            $chatQuestion = ChatSession::find($id);
             if (!$chatQuestion) {
                 return response()->json(['message' => 'Chat session not found.', 'status' => 400]);
             }
