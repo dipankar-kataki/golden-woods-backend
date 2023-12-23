@@ -50,7 +50,7 @@ Route::get('blog/list', [BlogController::class, 'index']);
 Route::get('blog/get/{id}', [BlogController::class, 'show']);
 
 Route::post('chatsession/create', [ChatSessionController::class, 'create']);
-Route::get('chatquestion/get/{id}', [ChatQuestionController::class, 'show']);
+Route::get('chatquestion/list', [ChatQuestionController::class, 'show']);
 Route::post('chatsession/webuser/create', [WebUserController::class, 'create']);
 
 Route::group(["middleware" => 'jwt.verify'], function () {
@@ -99,8 +99,6 @@ Route::group(["middleware" => 'jwt.verify'], function () {
     });
     Route::prefix('chatquestion')->group(function () {
         Route::post('create', [ChatQuestionController::class, 'create']);
-        Route::get('list', [ChatQuestionController::class, 'index']);
-
         Route::put('update/{id}', [ChatQuestionController::class, 'update']);
         Route::delete('delete/{id}', [ChatQuestionController::class, 'destroy']);
     });
@@ -109,7 +107,8 @@ Route::group(["middleware" => 'jwt.verify'], function () {
         Route::delete('delete/{id}', [ChatSessionController::class, 'destroy']);
     });
     Route::prefix('web_user')->group(function () {
-        Route::get('get', [WebUserController::class, 'index']);
+        Route::get('list', [WebUserController::class, 'index']);
+        Route::get('get/{id}', [WebUserController::class, 'show']);
         Route::get('create', [WebUserController::class, 'create']);
 
     });

@@ -32,6 +32,6 @@ class WebUser extends Model
     }
     public function chatSessions()
     {
-        return $this->hasMany(ChatSession::class, 'web_user');
+        return $this->hasMany(ChatSession::class, 'web_user_id');
     }
 }

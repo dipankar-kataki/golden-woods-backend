@@ -42,12 +42,11 @@ class WebUserController extends Controller
     public function show(Request $request)
     {
         try {
-            $webUser = WebUser::find($request->id);
+            $webUser = WebUser::with('chatSessions')->find($request->id);
             if (!$webUser) {
                 return response()->json(["message" => 'WebUser not found', "status" => 404]);
             }
-            $webUserWithChatSessions = $webUser->load('chatSessions');
-            return response()->json(["data" => $webUserWithChatSessions, "status" => 200]);
+            return response()->json(["data" => $webUser, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
