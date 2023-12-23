@@ -50,7 +50,7 @@ Route::get('blog/list', [BlogController::class, 'index']);
 Route::get('blog/get/{id}', [BlogController::class, 'show']);
 
 Route::post('chatsession/create', [ChatSessionController::class, 'create']);
-Route::get('chatquestion/list', [ChatQuestionController::class, 'show']);
+Route::get('chatquestion/list', [ChatQuestionController::class, 'index']);
 Route::post('chatsession/webuser/create', [WebUserController::class, 'create']);
 
 Route::group(["middleware" => 'jwt.verify'], function () {
