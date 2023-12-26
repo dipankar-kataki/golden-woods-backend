@@ -12,8 +12,8 @@ class ChatQuestionController extends Controller
     public function index()
     {
         try {
-            $chatQuestions = ChatQuestion::all();
-            return response()->json(['chatQuestions' => $chatQuestions, "status" => 200]);
+            $chatQuestion = ChatQuestion::with("answers")->get();
+            return response()->json(['chatQuestions' => $chatQuestion, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
         }
