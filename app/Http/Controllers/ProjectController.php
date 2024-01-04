@@ -124,7 +124,7 @@ class ProjectController extends Controller
     public function getList(Request $request)
     {
         try {
-            $list = Project::select('id', 'projectName', 'pdf')->paginate(100);
+            $list = Project::select('id', 'projectName', 'brochure')->paginate(100);
             return response()->json(["data" => $list, "status" => 200]);
         } catch (\Exception $e) {
             return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
