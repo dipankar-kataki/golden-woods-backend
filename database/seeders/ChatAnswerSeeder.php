@@ -81,11 +81,11 @@ class ChatAnswerSeeder extends Seeder
                 'answer' => 'more than 1 crore',
             ],
             [
-                'question' => 4,
+                'question' => 6,
                 'answer' => 'Yes, I have secured financing. Details: [Provide details here]',
             ],
             [
-                'question' => 4,
+                'question' => 6,
                 'answer' => 'No, I have not secured financing but interested in assistance.',
             ],
             [

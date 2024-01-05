@@ -41,21 +41,21 @@ class ChatQuestionSeeder extends Seeder
         // Question 4
         DB::table('chat_question')->insert([
             'questionNumber' => 4,
-            'questionType' => 'choice',
-            'question' => 'Do you have specific features or amenities you are looking for?',
+            'questionType' => 'subjective',
+            'question' => 'Do you have specific features or amenities you are looking for? Please tell.',
         ]);
 
         // Question 5
         DB::table('chat_question')->insert([
             'questionNumber' => 5,
-            'questionType' => 'subjective',
+            'questionType' => 'choice',
             'question' => 'What is your budget range for the real estate investment?',
         ]);
 
         // Question 6
         DB::table('chat_question')->insert([
             'questionNumber' => 6,
-            'questionType' => 'subjective',
+            'questionType' => 'choice',
             'question' => 'Have you secured financing? If yes, please provide details. If not, are you interested in assistance with financing options?',
         ]);
 
@@ -85,7 +85,7 @@ class ChatQuestionSeeder extends Seeder
         // Question 10
         DB::table('chat_question')->insert([
             'questionNumber' => 10,
-            'questionType' => 'subjective',
+            'questionType' => 'choice',
             'question' => 'Are there any specific time constraints or considerations we should be aware of?',
         ]);
 

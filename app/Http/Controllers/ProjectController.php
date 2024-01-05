@@ -97,8 +97,6 @@ class ProjectController extends Controller
             $project->flatConfig = json_decode($project->flatConfig);
             $project->withinReach = json_decode($project->withinReach);
 
-            // Continue processing or return the response with project and gallery details 
-
             $projectImages = [
                 'architectural' => $project->gallery
                     ->where('imageType', 'architectural')
@@ -163,8 +161,8 @@ class ProjectController extends Controller
             $project->fill($request->only(['projectName', 'flatConfig', 'status', 'description', 'location', "overviewHeading", "overviewContent", "overviewFooter", "withinReach", 'isActive']));
             // Update file fields
             $project->flatConfig = json_encode($request->flatConfig);
-
-            foreach (['projectImage1', 'projectImage2', 'brochure', "projectBanner", 'projectThumbnail', 'projectVideo', "withinReachImage"] as $fileField) {
+            $fileFields = ['projectImage1', 'projectImage2', 'brochure', 'projectBanner', 'projectThumbnail', 'projectVideo', 'withinReachImage'];
+            foreach ($fileFields as $fileField) {
                 if ($request->hasFile($fileField)) {
                     $oldFilePath = $project->{$fileField};
                     if ($oldFilePath && Storage::exists($oldFilePath)) {
