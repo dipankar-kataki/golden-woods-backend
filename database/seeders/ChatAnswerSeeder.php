@@ -139,6 +139,6 @@ class ChatAnswerSeeder extends Seeder
             ],
         ];
 
-        // DB::table('chat_answer')->insert($answers);
+        DB::table('chat_answer')->insert($answers);
     }
 }
