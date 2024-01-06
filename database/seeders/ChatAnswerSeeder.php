@@ -15,7 +15,7 @@ class ChatAnswerSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('chat_answer')->truncate();
+        DB::table('chat_answer')->delete();
         $answers = [
             [
                 'question' => 1,
