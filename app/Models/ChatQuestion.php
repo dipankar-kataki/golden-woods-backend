@@ -21,6 +21,7 @@ class ChatQuestion extends Model
     }
     public function answers()
     {
-        return $this->hasMany(ChatAnswer::class, 'question');
+        return $this->hasMany(ChatAnswer::class, 'questionNumber');
     }
+
 }

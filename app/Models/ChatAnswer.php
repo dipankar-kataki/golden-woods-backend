@@ -19,6 +19,7 @@ class ChatAnswer extends Model
     }
     public function question()
     {
-        return $this->belongsTo(ChatQuestion::class, 'question');
+        return $this->belongsTo(ChatQuestion::class, 'questionNumber');
     }
+
 }
