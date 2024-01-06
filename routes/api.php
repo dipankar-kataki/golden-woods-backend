@@ -94,6 +94,8 @@ Route::group(["middleware" => 'jwt.verify'], function () {
     });
     Route::prefix('chatanswers')->group(function () {
         Route::post('create', [ChatAnswerController::class, 'create']);
+        Route::get('list', [ChatAnswerController::class, 'index']);
+
         Route::put('update/{id}', [ChatAnswerController::class, 'update']);
         Route::delete('delete/{id}', [ChatAnswerController::class, 'destroy']);
     });
@@ -111,8 +113,6 @@ Route::group(["middleware" => 'jwt.verify'], function () {
         Route::get('get/{id}', [WebUserController::class, 'show']);
         Route::get('create', [WebUserController::class, 'create']);
     });
-    Route::prefix('chatanswer')->group(function () {
-        Route::get('list', [WebUserController::class, 'index']);
-    });
+
     Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
