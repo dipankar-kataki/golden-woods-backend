@@ -110,7 +110,9 @@ Route::group(["middleware" => 'jwt.verify'], function () {
         Route::get('list', [WebUserController::class, 'index']);
         Route::get('get/{id}', [WebUserController::class, 'show']);
         Route::get('create', [WebUserController::class, 'create']);
-
+    });
+    Route::prefix('chatanswer')->group(function () {
+        Route::get('list', [WebUserController::class, 'index']);
     });
     Route::post('logout', [UserController::class, 'logout'])->name('logout');
 });
