@@ -20,6 +20,7 @@ class ChatQuestionSeeder extends Seeder
 
         // Truncate table
         DB::table('chat_question')->delete();
+        DB::table('chat_question')->truncate();
 
         // Add back foreign key constraint
         // DB::statement('ALTER TABLE chat_answer ADD FOREIGN KEY (question) REFERENCES chat_question(id)');
