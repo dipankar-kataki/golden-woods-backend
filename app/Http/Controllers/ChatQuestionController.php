@@ -60,7 +60,6 @@ class ChatQuestionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $request->validate(ChatQuestion::createRule());
 
             $chatQuestion = ChatQuestion::find($request->id)->first();
             if (!$request->id) {
