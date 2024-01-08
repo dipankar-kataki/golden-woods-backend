@@ -19,7 +19,10 @@ class ProjectGalleryController extends Controller
 
     public function create(Request $request)
     {
-        ProjectGallery::where("projectId", $request->id)->delete();
+        ProjectGallery::where("projectId", $request->id)
+            ->where("imageType", $request->imageType)
+            ->delete();
+
         $validator = Validator::make($request->all(), ProjectGallery::rules());
         if ($validator->fails()) {
             return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
