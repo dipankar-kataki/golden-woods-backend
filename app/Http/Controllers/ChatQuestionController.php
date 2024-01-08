@@ -71,7 +71,7 @@ class ChatQuestionController extends Controller
 
             return response()->json(['message' => 'Chat question updated successfully', 'status' => 200]);
         } catch (\Exception $e) {
-            return response()->json(["message" => 'Internal server error.', "status" => 500]);
+            return response()->json(["message" => 'Internal server error.' . $e->getMessage(), "status" => 500]);
         }
     }
 
