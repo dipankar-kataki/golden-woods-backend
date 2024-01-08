@@ -160,7 +160,7 @@ class ProjectController extends Controller
                 return response()->json(["message" => "Project not found.", "status" => 404]);
             }
             // Update project fields
-            $project->fill($request->only(['projectName', 'flatConfig', 'status', 'description', 'location', "overviewHeading", "overviewContent", "overviewFooter", "withinReach", 'isActive']));
+            $project->fill($request->only(['projectName', 'flatConfig', 'status', 'description', 'location', "overviewHeading", "overviewContent", "overviewFooter", "withinReach", 'isActive', "city"]));
             // Update file fields
             $project->flatConfig = json_encode($request->flatConfig);
             $fileFields = ['projectImage1', "propertyLogo", 'projectImage2', 'brochure', 'projectBanner', 'projectThumbnail', 'projectVideo', 'withinReachImage'];
