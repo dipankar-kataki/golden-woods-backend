@@ -29,7 +29,7 @@ class ChatAnswerController extends Controller
             return response()->json(["message" => 'Internal server error.', "status" => 500]);
         }
     }
-  
+
     public function store(Request $request)
     {
         try {
@@ -51,7 +51,8 @@ class ChatAnswerController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $chatAnswer = ChatAnswer::find($id);
+            $chatAnswer = ChatAnswer::where('id', $request->id)->first();
+
             if (!$chatAnswer) {
                 return response()->json(['message' => 'Chat answer not found.', 'status' => 400]);
             }

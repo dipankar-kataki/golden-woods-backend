@@ -43,7 +43,6 @@ class ChatQuestionController extends Controller
             if ($validator->fails()) {
                 return response()->json(["message" => "Oops!" . $validator->errors()->first(), "status" => 400]);
             }
-            // dump($request);
 
             DB::beginTransaction();
             $chatQuestionData = $request->only('question', 'questionNumber');
