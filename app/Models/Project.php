@@ -25,6 +25,7 @@ class Project extends Model
             'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
             "propertyLogo" => 'nullable|mimes:jpg,png,jpeg,pdf',
+            "city" => 'requred|string',
             'projectVideo' => 'nullable|mimes:mp4,avi|max:500000',
             'description' => 'required|string',
             'overviewHeading' => 'required|string',
