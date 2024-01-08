@@ -71,7 +71,9 @@ class ProjectController extends Controller
             if ($request->hasFile('brochure')) {
                 $projectData["brochure"] = $request->file('brochure')->store('brochures');
             }
-
+            if ($request->hasFile("propertyLogo")) {
+                $projectData["propertyLogo"] = $request->file("propertyLogo")->store("propertyLogo");
+            }
             $project = Project::create($projectData);
 
             return response()->json(["message" => "Project created successfully", "status" => 201]);
