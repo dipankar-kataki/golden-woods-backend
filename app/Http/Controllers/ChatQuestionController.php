@@ -62,8 +62,12 @@ class ChatQuestionController extends Controller
         try {
             $request->validate(ChatQuestion::createRule());
 
-            $chatQuestion = ChatQuestion::findOrFail($id);
-            $chatQuestion->update($request->all());
+            $chatQuestion = ChatQuestion::find($request->id)->first();
+            if (!$request->id) {
+                return response()->json(["message" => 'No question found.', "status" => 404]);
+            }
+            $chatQuestion['question'] = $request->question;
+            $chatQuestion->save();
 
             return response()->json(['message' => 'Chat question updated successfully', 'status' => 200]);
         } catch (\Exception $e) {

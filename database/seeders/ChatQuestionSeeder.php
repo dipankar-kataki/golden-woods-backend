@@ -99,8 +99,8 @@ class ChatQuestionSeeder extends Seeder
         // Question 11
         DB::table('chat_question')->updateOrInsert([
             'questionNumber' => 11,
-            'questionType' => 'subjective',
-            'question' => 'Is there anything else you would like to share or inquire about regarding the real estate project?',
+            'questionType' => '',
+            'question' => 'Our representative will connect with you soon. Thank you!',
         ]);
     }
 }
