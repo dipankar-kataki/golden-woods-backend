@@ -61,7 +61,7 @@ class ChatQuestionController extends Controller
     {
         try {
 
-            $chatQuestion = ChatQuestion::find($request->id)->first();
+            $chatQuestion = ChatQuestion::where('id', $request->id)->first();
             if (!$request->id) {
                 return response()->json(["message" => 'No question found.', "status" => 404]);
             }
