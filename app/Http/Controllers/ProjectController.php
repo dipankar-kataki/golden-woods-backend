@@ -176,6 +176,7 @@ class ProjectController extends Controller
             // Save changes
             $project->save();
             // Return response
+            Log::info('This is an informational message.');
             return response()->json(["message" => "Project modified.", "status" => 200]);
         } catch (\Exception $e) {
             // Log error
