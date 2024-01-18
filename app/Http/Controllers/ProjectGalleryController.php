@@ -16,7 +16,6 @@ use Illuminate\Support\Str;
 class ProjectGalleryController extends Controller
 {
 
-
     public function create(Request $request)
     {
         ProjectGallery::where("projectId", $request->id)
