@@ -19,7 +19,7 @@ class Project extends Model
     public static function createRules()
     {
         return [
-            'projectName' => 'required|string|unique:projects',
+            'projectName' => 'required|string',
             'status' => 'required|string|in:completed,ongoing',
             'projectBanner' => 'required|mimes:jpg,png,jpeg,pdf',
             'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
