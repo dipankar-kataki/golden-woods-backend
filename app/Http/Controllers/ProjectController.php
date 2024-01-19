@@ -124,10 +124,15 @@ class ProjectController extends Controller
     public function getList(Request $request)
     {
         try {
-            $list = Project::select('id', 'projectName', 'brochure', "projectImage1", "projectImage2", "isActive", "status", "city")->paginate(100);
+            $list = Project::select('id', 'projectName', 'brochure', 'projectImage1', 'projectImage2', 'isActive', 'status', 'city')
+                ->where('isActive', 1)
+                ->paginate(10);
+    
             return response()->json(["data" => $list, "status" => 200]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["message" => 'Resource not found.', "data" => null, "status" => 404]);
         } catch (\Exception $e) {
-            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "data" => null, "status" => 500]);
         }
     }
 
