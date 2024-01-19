@@ -57,6 +57,7 @@ Route::group(["middleware" => 'jwt.verify'], function () {
     Route::prefix('project')->group(function () {
         Route::post('create', [ProjectController::class, 'create']);
         Route::post('update/{id}', [ProjectController::class, 'edit']);
+        Route::post("all/list", [ProjectController::class, "getAllList"]);
         Route::delete('delete/{id}', [ProjectController::class, 'destroy']);
     });
     Route::prefix('amenities')->group(function () {
