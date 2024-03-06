@@ -83,9 +83,10 @@ class BlogController extends Controller
             }
 
             // Update only changed fields
-            $blog->title = $request->title ?? $blog->title;
-            $blog->author = $request->author ?? $blog->author;
-            $blog->content = $request->content ?? $blog->content;
+            $blog->title = $request->filled('title') ? $request->title : $blog->title;
+            $blog->author = $request->filled('author') ? $request->author : $blog->author;
+            $blog->content = $request->filled('content') ? $request->content : $blog->content;
+            
 
             // Update blog image if a new one is provided
             if ($request->hasFile('blogImage')) {
