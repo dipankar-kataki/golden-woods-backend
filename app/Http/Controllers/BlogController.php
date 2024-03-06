@@ -106,7 +106,7 @@ class BlogController extends Controller
     {
         try {
             // Get the blog ID from the request
-            $blogId = $request->id;
+            $blogId = $request->input("id");
 
             // Find the blog by its ID
             $blog = Blog::findOrFail($blogId);
