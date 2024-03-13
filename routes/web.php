@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,10 @@ Route::group(['prefix' => 'admin'], function(){
 
         Route::group(['prefix' => 'dashboard'], function(){
             Route::get('', [DashboardController::class, 'index'])->name('admin.dashboard');
+        });
+
+        Route::group(['prefix' => 'blog'], function(){
+            Route::match(['get', 'post'], '', [BlogController::class, 'index'])->name('admin.blog');
         });
 
         Route::get('logout', function(){
