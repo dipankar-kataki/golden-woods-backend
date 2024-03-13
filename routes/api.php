@@ -7,7 +7,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\ProjectAmenityController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\ProjectGalleryController;
 /*
@@ -64,13 +63,6 @@ use App\Http\Controllers\ProjectGalleryController;
             Route::post('{id}/create', [ProjectGalleryController::class, 'create']);
             Route::get('{id}/get', [ProjectGalleryController::class, 'index']);
 
-        });        
-        Route::prefix('blog')->group(function () {
-            Route::post('create', [BlogController::class, 'create']);
-            Route::get('{id}/get', [BlogController::class, 'show']);
-            Route::get('list', [BlogController::class, 'index']);
-            Route::put('{id}/update', [BlogController::class, 'update']);
-            Route::delete('{id}/delete', [BlogController::class, 'destroy']);
-        });
+        }); 
     });
     
