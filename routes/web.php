@@ -32,7 +32,12 @@ Route::group(['prefix' => 'admin'], function(){
         });
 
         Route::group(['prefix' => 'blog'], function(){
-            Route::match(['get', 'post'], '', [BlogController::class, 'index'])->name('admin.blog');
+
+            Route::get('all', [BlogController::class, 'index'])->name('admin.blog.all');
+            Route::match(['get', 'post'],'create', [BlogController::class, 'create'])->name('admin.blog.create');
+            Route::get('details/{id}', [BlogController::class, 'details'])->name('admin.blog.details');
+            Route::post('update', [BlogController::class, 'updateDetails'])->name('admin.blog.update.details');
+            Route::post('delete', [BlogController::class, 'delete'])->name('admin.blog.delete');
         });
 
         Route::get('logout', function(){

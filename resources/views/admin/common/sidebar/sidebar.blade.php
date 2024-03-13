@@ -22,10 +22,24 @@
         </li>
 
         <!-- Layouts -->
+        
         <li class="{{Request::segment(2) == 'blog' ? 'menu-item active' : 'menu-item'}}">
-            <a href="{{route('admin.blog')}}" class="menu-link">
-                <div data-i18n="Without menu">Blog</div>
+            <a href="javascript:void(0)" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-copy"></i>
+              <div data-i18n="Extended UI">Blog</div>
             </a>
+            <ul class="menu-sub">
+                <li class="{{Request::segment(3) == 'all' ? 'menu-item active' : 'menu-item'}}">
+                    <a href="{{route('admin.blog.all')}}" class="menu-link">
+                        <div data-i18n="Without menu">All</div>
+                    </a>
+                </li>
+                <li class="{{Request::segment(3) == 'create' ? 'menu-item active' : 'menu-item'}}">
+                    <a href="{{route('admin.blog.create')}}" class="menu-link">
+                        <div data-i18n="Without menu">Create</div>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </aside>
