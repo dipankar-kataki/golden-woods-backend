@@ -12,38 +12,43 @@ use Illuminate\Http\Request;
 class ProjectAmenityController extends Controller
 {
     public function create(Request $request)
-    {      
-        $project = Project::find($request->projectId);
-        if(!$project){
-            return response()->json(["message"=> "Project not found.","status"=>404]);
+    {
+        try {
+            // Find the project by ID
+            $project = Project::findOrFail($request->projectId);
+
+            ProjectAmenity::where("projectId", $request->projectId)->delete();
+            // Add new project amenities
+            foreach ($request->amenityId as $amenity) {
+                ProjectAmenity::create([
+                    "projectId" => $request->projectId,
+                    "amenityId" => $amenity,
+                ]);
+            }
+            return response()->json(["message" => "Amenities added to project.", "status" => 201]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(["message" => "Project not found.", "status" => 404]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => 'Oops! Something went wrong.' . $e->getMessage(), "status" => 500]);
         }
-        $amenity = Amenity::find($request->amenityId);
-        if(!$amenity){
-            return response()->json(["message"=> "Amenity not found.","status"=>404]);
-        }
-        
-        $projectAmenity = ProjectAmenity::create($request->all());
-        return response()->json(["message"=> "Amenity added to project.","status"=>201]);
     }
 
     public function show(Request $request)
     {
-        $project = ProjectAmenity::find($request->id); 
-        if(!$project){
-            return response()->json(["message"=> "Project not found.","status"=> 404]);
+        try {
+            $projectId = $request->id;
+            $project = Project::find($projectId);
+
+            if (!$project) {
+                return response()->json(["message" => "Project not found.", "status" => 404]);
+            }
+
+            // Assuming you have a pivot table named 'project_amenities'
+            $amenities = $project->amenities()->select('amenityName', 'amenityImage')->get();
+            return response()->json(["data" => $amenities, "status" => 200]);
+        } catch (\Exception $e) {
+            return response()->json(["message" => 'Oops! Something Went Wrong.' . $e->getMessage(), "status" => 500]);
         }
-        return response()->json(["data"=>$project, "status"=>200]);
-    }
- 
-    public function destroy(Request $request)
-    {
-        $amenityId = $request->input('id');
-        $deletedRows = ProjectAmenity::where('amenityId', $amenityId)->delete();
-    
-        if ($deletedRows > 0) {
-            return response()->json(["message" => " Amenity removed successfully.", "status" => 200]);
-        } else {
-            return response()->json(["message" => "No amenities found.", "status" => 404]);
-        }
+
     }
 }

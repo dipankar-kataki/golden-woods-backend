@@ -17,15 +17,17 @@ return new class extends Migration
      {
          Schema::create('enquiries', function (Blueprint $table) {
              $table->id();
-             $table->string("name")->nullable(false);
-             $table->string("mobile")->nullable(false);
-             $table->string("email")->nullable(false);
-             $table->text("message");
-             $table->integer("projectId");
+             $table->string("name");
+             $table->string("phone", 10); 
+             $table->string("email")->nullable();
+             $table->string("flatType")->nullable();
+             $table->string("enquiryType")->default("general");
+             $table->integer("projectId")->nullable();
              $table->tinyInteger("madeEnquiry")->default(0);
              $table->timestamps();
          });
      }
+     
      
     /**
      * Reverse the migrations.

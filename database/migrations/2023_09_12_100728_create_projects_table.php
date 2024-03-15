@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,14 +15,21 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string("projectName")->unique()->nullable();
-            $table->string("status")->nullable();
-            $table->string("projectImage")->nullable();
+            $table->string("status");
+            $table->string("projectBanner")->nullable();
+            $table->string("projectImage1");
+            $table->string("projectImage2");
             $table->string("projectVideo")->nullable();
-            $table->string("description")->nullable();
-            $table->string("location",255)->nullable();
-            $table->string("approvedPlan")->nullable();
+            $table->string("projectThumbnail");
+            $table->text("description");
+            $table->text("overviewHeading");
+            $table->text("overviewContent");
+            $table->text("overviewFooter");
+            $table->string("location");
+            $table->text("withinReach");
+            $table->string("withinReachImage");
+            $table->text("flatConfig");
             $table->string("brochure")->nullable();
-            $table->string("projectNoc")->nullable();
             $table->tinyInteger("isActive")->default(0);
             $table->timestamps();
         });

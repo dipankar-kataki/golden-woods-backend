@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText("content");
             $table->timestamps();
         });
-    }
+    }    
 
     /**
      * Reverse the migrations.

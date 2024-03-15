@@ -7,16 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectAmenity extends Model
 {
+    protected $table = "project_amenities";
+
     use HasFactory;
     protected $fillable = [
         "projectId",
         "amenityId",
     ];
+    protected $casts = [
+        'amenityId' => 'array',
+    ];
 
-    public static function rules(){
+    public static function rules()
+    {
         return [
-            "projectId"=>"required|integer|exists:projects,id",
-            "amenityId"=>"required|integer|exists:amenities,id",
+            "projectId" => "required|integer|exists:projects,id",
+            "amenityId" => "required|integer|exists:amenities,id",
         ];
     }
 }

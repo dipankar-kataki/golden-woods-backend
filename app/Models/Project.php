@@ -4,40 +4,55 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
     use HasFactory;
-    protected $fillable  = [
-        "projectName",
-        "status",
-        'isActive',
-        "description",
-        "location", 
-        "projectVideo",
-        "projectImage",
-        "approvedPlan",
-        "brochure",
-        'projectNoc',
-    ];
+    protected $table = "projects";
 
-    public static function createRules(){
+    protected $guarded = [
+    ];
+    protected $casts = [
+        "withinReach" => "array",
+    ];
+    public static function createRules()
+    {
         return [
-            'projectName'=>'string|unique:projects',
-            'status'=> 'string|in:ongoing,completed',
-            'description' => 'string',
-            'location' => 'string|max:255',
-            'projectImage'=>'required',
-            'projectVideo'=>'required',
-            'approvedPlan'=> 'required',
-            'brochure' => 'required',
-            'projectNoc' => 'required',
+            'projectName' => 'required|string',
+            'status' => 'required|string|in:completed,ongoing',
+            'projectBanner' => 'required|mimes:jpg,png,jpeg,pdf',
+            'projectImage1' => 'required|mimes:jpg,png,jpeg,pdf',
+            'projectImage2' => 'required|mimes:jpg,png,jpeg,pdf',
+            "propertyLogo" => 'nullable|mimes:jpg,png,jpeg,pdf',
+            "city" => 'requred|string',
+            'projectVideo' => 'nullable|mimes:mp4,avi|max:500000',
+            'description' => 'required|string',
+            'overviewHeading' => 'required|string',
+            'overviewContent' => 'required|string',
+            'overviewFooter' => 'required|string',
+            'location' => 'required|string|max:255',
+            'withinReach' => 'required|string',
+            'withinReachImage' => 'required|mimes:jpg,png,jpeg,pdf',
+            'flatConfig' => 'required|string',
+            'brochure' => 'nullable|mimes:jpg,png,jpeg,pdf',
         ];
     }
 
-    public static function hideRules(){
+    public static function hideRules()
+    {
         return [
             'isActive' => 'required|boolean',
         ];
+    }
+
+    public function gallery(): HasMany
+    {
+        return $this->hasMany(ProjectGallery::class, 'projectId');
+    }
+
+    public function amenities()
+    {
+        return $this->belongsToMany(Amenity::class, 'project_amenities', 'projectId', 'amenityId');
     }
 }

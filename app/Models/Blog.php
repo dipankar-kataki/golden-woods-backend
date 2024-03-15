@@ -12,4 +12,14 @@ class Blog extends Model
     protected $table = 'blogs';
 
     protected $guarded = [];
+    public static function createRules()
+    {
+        return [
+            'title' => 'required|string',
+            'blogImage' => 'required|mimes:jpg,png,jpeg',
+            'author' => 'required|string',
+            'content' => 'required|string',
+        ];
+    }
+
 }
