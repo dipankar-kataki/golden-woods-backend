@@ -51,7 +51,7 @@ class BlogController extends Controller
     {
         try {
             // Use Eloquent's findOrFail to get a blog by its ID
-            $blog = Blog::findOrFail($request->input("id"));
+            $blog = Blog::findOrFail($request->id);
 
             return response()->json(["data" => $blog, "status" => 200]);
         } catch (\Exception $e) {
