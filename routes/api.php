@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\ChatAnswerController;
 use App\Http\Controllers\ChatQuestionController;
 use App\Http\Controllers\ChatSessionController;
