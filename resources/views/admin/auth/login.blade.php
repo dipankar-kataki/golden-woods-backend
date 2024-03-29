@@ -124,6 +124,7 @@
           processData:false,
           data:formData,
           success:function(data){
+          console.log(data)
             if(data.status == 200){
               toastr.success(data.message)
               window.location.replace(data.data)

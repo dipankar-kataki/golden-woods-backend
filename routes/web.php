@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin'], function(){
         Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('admin.login');
     });
 
-    Route::group(['middleware' => 'auth'], function(){
+    // Route::middleware(['auth'])->group(function(){
 
         Route::group(['prefix' => 'dashboard'], function(){
             Route::get('', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -41,11 +41,12 @@ Route::group(['prefix' => 'admin'], function(){
         });
 
         Route::get('logout', function(){
-            Session::flush();
-            Auth::logout();
-            return redirect()->route('admin.login');
+            // // Session::flush();
+            // // Auth::logout();
+            // return route('admin.login');
+            return view('admin.auth.login');
         });
-    });
+    // });
 });
 
 
