@@ -24,7 +24,7 @@ class BlogController extends Controller
         }else{
             $validator = Validator::make($request->all(),[
                 'blogTitle' => 'required',
-                'blogImage' => 'required|image|mimes:jpg,png,jpeg|2048',
+                'blogImage' => 'required|image|mimes:jpg,png,jpeg',
                 'blogContent' => 'required'
             ]);
 
@@ -69,7 +69,7 @@ class BlogController extends Controller
                     
 
                 }catch(\Exception $e){
-                    return $this->error('Oops! Something went wrong.'.$e->getMessage(), null, 500);
+                    return $this->error('Oops! Something went wrong.'.$e->getMessage().' '.$e->getLine(), null, 500);
                 }
             }
             
