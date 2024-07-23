@@ -12,6 +12,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script src="{{ asset('react-app/assets/index-df73a10e.js') }}"></script>
+    <script src="jquery.min.js"></script>
+    <script src="owlcarousel/owl.carousel.min.js"></script>
 </body>
 
 </html>
