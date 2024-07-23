@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Mail\ResetPasswordEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,34 +20,38 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin'], function () {
 
-    Route::group(['prefix' => 'auth'], function(){
+    Route::group(['prefix' => 'auth'], function () {
         Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('admin.login');
     });
 
-    Route::group(['middleware' => 'auth'], function(){
+    Route::group(['middleware' => 'auth'], function () {
 
-        Route::group(['prefix' => 'dashboard'], function(){
+        Route::group(['prefix' => 'dashboard'], function () {
             Route::get('', [DashboardController::class, 'index'])->name('admin.dashboard');
         });
 
-        Route::group(['prefix' => 'blog'], function(){
+        Route::group(['prefix' => 'blog'], function () {
 
             Route::get('all', [BlogController::class, 'index'])->name('admin.blog.all');
-            Route::match(['get', 'post'],'create', [BlogController::class, 'create'])->name('admin.blog.create');
+            Route::match(['get', 'post'], 'create', [BlogController::class, 'create'])->name('admin.blog.create');
             Route::get('details/{id}', [BlogController::class, 'details'])->name('admin.blog.details');
             Route::post('update', [BlogController::class, 'updateDetails'])->name('admin.blog.update.details');
             Route::post('delete', [BlogController::class, 'delete'])->name('admin.blog.delete');
         });
 
-        Route::get('logout', function(){
+        Route::get('logout', function () {
             Session::flush();
             Auth::logout();
             return redirect()->route('admin.login');
         });
     });
 });
+
+Route::get('/{any}', function () {
+    return view('react-app');
+})->where('any', '.*');
 
 
 

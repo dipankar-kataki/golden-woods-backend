@@ -12,7 +12,7 @@ trait AjaxResponser{
             'status' => $status
         ]);
     }
-
+ 
     public function error($message, $data, $status){
         return response()->json([
             'success' => false,
