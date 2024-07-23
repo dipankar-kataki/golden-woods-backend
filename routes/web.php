@@ -49,6 +49,11 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
+// Route::get('/{any}', function () {
+//     return file_get_contents(public_path('react-app/index.html'));
+// })->where('any', '.*');
+
+
 Route::get('/{any}', function () {
     return view('react-app');
 })->where('any', '.*');
