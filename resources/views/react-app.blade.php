@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React App</title>
-    <link rel="stylesheet" href="{{ asset('dist/assets/index-5f77684b.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/assets/index-ea9ccbd9.css') }}">
 
 </head>
 
