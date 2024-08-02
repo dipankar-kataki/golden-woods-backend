@@ -14,6 +14,7 @@
     <div id="root"></div>
     <script src="{{ asset('react-app/assets/index-505ab173.js') }}"></script>
 
+
 </body>
 
 </html>
