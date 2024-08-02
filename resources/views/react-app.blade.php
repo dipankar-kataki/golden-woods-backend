@@ -12,9 +12,7 @@
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="{{ asset('react-app/assets/index-505ab173.js') }}"></script>
-
-
+    <script src="{{ asset('react-app/assets/index-3d3cb9bd.js') }}"></script>
 </body>
 
 </html>
