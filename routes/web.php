@@ -63,9 +63,6 @@ Route::get('/{any}', function () {
 })->where('any', '^(?!admin).*');
 
 // Explicit home route for React App
-Route::get('/', function () {
-    return view('react-app');
-});
 
 
 
