@@ -134,15 +134,11 @@
         data: formData,
         success: function (data) {
           console.log('Success response:', data); // Log the success response from the server
+          console.log('Redirecting to:', data.data); // Log the URL being used for redirection
 
           if (data.status == 200) {
             toastr.success(data.message);
-            window.location.replace(data.data);
-
-            // setTimeout(function () {
-            //   window.location.href = data.data;
-            // }, 1000); // Redirect to the new page after 1 second
-
+            window.location.replace(data.data); // Ensure this contains the correct URL
           } else {
             toastr.error(data.message);
             $('.sign-in-btn').text('Sign In');
