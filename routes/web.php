@@ -54,10 +54,18 @@ Route::group(['prefix' => 'admin'], function () {
 // })->where('any', '.*');
 
 
+// Route::get('/{any}', function () {
+//     return view('react-app');
+// })->where('any', '.*');
+
 Route::get('/{any}', function () {
     return view('react-app');
-})->where('any', '.*');
+})->where('any', '^(?!admin).*$'); // This regex ensures that 'admin' prefix routes are excluded
 
+// Explicit home route for React App
+Route::get('/', function () {
+    return view('react-app');
+});
 
 
 
