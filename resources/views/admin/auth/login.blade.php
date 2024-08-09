@@ -133,9 +133,16 @@
         processData: false,
         data: formData,
         success: function (data) {
+          console.log('Success response:', data); // Log the success response from the server
+
           if (data.status == 200) {
             toastr.success(data.message);
             window.location.replace(data.data);
+
+            setTimeout(function () {
+              window.location.href = data.data;
+            }, 1000); // Redirect to the new page after 1 second
+
           } else {
             toastr.error(data.message);
             $('.sign-in-btn').text('Sign In');
@@ -143,13 +150,16 @@
           }
         },
         error: function (err) {
-          toastr.error(err);
+          console.log('Error response:', err); // Log the error response from the server
+
+          toastr.error('An error occurred. Please try again.');
           $('.sign-in-btn').text('Sign In');
           $('.sign-in-btn').attr('disabled', false);
         }
-      })
+      });
     });
   </script>
+
 </body>
 
 </html>
