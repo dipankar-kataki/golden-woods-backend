@@ -147,7 +147,8 @@
           $('.sign-in-btn').text('Sign In');
           $('.sign-in-btn').attr('disabled', false);
         }
-      });
+      })
+    });
   </script>
 </body>
 
