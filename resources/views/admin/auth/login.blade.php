@@ -139,9 +139,9 @@
             toastr.success(data.message);
             window.location.replace(data.data);
 
-            setTimeout(function () {
-              window.location.href = data.data;
-            }, 1000); // Redirect to the new page after 1 second
+            // setTimeout(function () {
+            //   window.location.href = data.data;
+            // }, 1000); // Redirect to the new page after 1 second
 
           } else {
             toastr.error(data.message);
