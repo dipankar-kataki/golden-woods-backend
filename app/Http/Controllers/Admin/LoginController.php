@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\AjaxResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -23,12 +24,14 @@ class LoginController extends Controller
                 ]);
 
                 if ($validator->fails()) {
+                    Log::($validator->errors()->first());
                     return $this->error('Oops! ' . $validator->errors()->first(), null, 400);
                 } else {
                     if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                         return $this->error('Oops! Invalid credentials', null, 400);
                     } else {
-                        return $this->success('Great! Sign in successful', '/admin/dashboard', 200);
+                        // return $this->success('Great! Sign in successful', route("admin.dashboard"), 200);
+                        return view('admin.dashboard');
                     }
                 }
 

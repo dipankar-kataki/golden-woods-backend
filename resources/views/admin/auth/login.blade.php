@@ -133,12 +133,12 @@
         processData: false,
         data: formData,
         success: function (data) {
-          console.log('Success response:', data); // Log the success response from the server
-          console.log('Redirecting to:', data.data); // Log the URL being used for redirection
+          console.log('Success response:', data); 
+          console.log('Redirecting to:', data.data); 
 
           if (data.status == 200) {
             toastr.success(data.message);
-            window.location.replace(data.data); // Ensure this contains the correct URL
+            window.location.replace(data.data); 
           } else {
             toastr.error(data.message);
             $('.sign-in-btn').text('Sign In');
@@ -146,7 +146,7 @@
           }
         },
         error: function (err) {
-          console.log('Error response:', err); // Log the error response from the server
+          console.log('Error response:', err); 
 
           toastr.error('An error occurred. Please try again.');
           $('.sign-in-btn').text('Sign In');
