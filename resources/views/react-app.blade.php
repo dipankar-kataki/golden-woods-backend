@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React App</title>
-    <link rel="stylesheet" href="{{ asset('dist/assets/index-144ec455.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/assets/index-8d891609.css') }}">
 
 </head>
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="{{ asset('dist/assets/index-c3d0f884.js') }}"></script>
+    <script src="{{ asset('dist/assets/index-a7adf304.js') }}"></script>
 </body>
 
 </html>
